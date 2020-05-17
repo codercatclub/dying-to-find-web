@@ -1,10 +1,8 @@
-varying float vReflectionFactor;
-
-uniform vec3 color;
+varying float noise;
 
 void main() {
-  vec4 refractedColor = vec4( 0.2, 0.2, 0.2, 1.0 );
-  vec4 reflectedColor = vec4( 0.8, 0.8, 0.8, 1.0 );
 
-  gl_FragColor = vec4(color, 1.0);
+  vec3 color = vec3(1. - 2. * noise);
+  gl_FragColor = vec4( color.rgb, 1.0 );
+
 }

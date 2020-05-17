@@ -1,20 +1,28 @@
-uniform float mRefractionRatio;
-uniform float mFresnelBias;
-uniform float mFresnelScale;
-uniform float mFresnelPower;
+@import ./PerlinNoise;
 
-varying vec3 vReflect;
-varying vec3 vRefract[3];
-varying float vReflectionFactor;
+varying float noise;
+uniform float timeMsec;
+uniform float displacementScale;
+
+float turbulence(vec3 p) {
+
+  float w = 100.0;
+  float t = -.5;
+
+  for (float f = 1.0; f <= 10.0; f++) {
+    float power = pow(2.0, f);
+    t += abs(pnoise3(vec3(power * p), vec3(10.0, 10.0, 10.0)) / power);
+  }
+
+  return t;
+}
 
 void main() {
-  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-  vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+  float time = timeMsec / 1000.0;
+  noise = 10.0 * -.10 * turbulence(.5 * normal + time / 3.0);
+  float b = 5.0 * pnoise3(0.05 * position, vec3(100.0));
+  float displacement = (-10. * noise + b) * displacementScale;
 
-  vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-
-  vec3 I = worldPosition.xyz - cameraPosition;
-  vReflectionFactor = mFresnelBias + mFresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), mFresnelPower );
-
-  gl_Position = projectionMatrix * mvPosition;
+  vec3 newPosition = position + normal * displacement;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }

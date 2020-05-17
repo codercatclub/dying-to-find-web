@@ -11,10 +11,14 @@
 <body>
   <a-scene renderer="colorManagement: true">
     <a-assets>
-      <a-asset-item id="pig" src="assets/models/scene.glb"></a-asset-item>
+      <a-asset-item id="scene" src="assets/models/scene.glb"></a-asset-item>
+      <a-asset-item id="box" src="assets/models/box.glb"></a-asset-item>
     </a-assets>
     <a-sky color="#ECECEC"></a-sky>
-    <a-sphere material="shader: fresnel; color: #ff66c6" position="-1 0.5 -3"></a-box>
+    <a-entity gltf-part="src: #scene; part: pig" position="0 2 -3"></a-entity>
+    <a-entity gltf-part="src: #scene; part: toy" position="2 0 -3"></a-entity>
+    <a-entity gltf-part="src: #scene; part: toy" material="shader: fresnel; color: '#5485ff'" position="-2 0 -3" ></a-entity>
+    <a-entity gltf-model="#box" position="4 0 -3" animation-mixer></a-entity>
   </a-scene>
 </body>
 
