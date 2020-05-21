@@ -9,22 +9,51 @@
 </head>
 
 <body>
-  <a-scene renderer="colorManagement: true">
+  <a-scene
+    renderer="colorManagement: true; physicallyCorrectLights: true;"
+    fog="type: exponential; density: 0.01; color: white;"
+    background="color: white"
+  >
     <a-assets>
-      <a-asset-item id="scene" src="assets/models/scene.glb"></a-asset-item>
-      <a-asset-item id="box" src="assets/models/box.glb"></a-asset-item>
-      <a-asset-item id="walk" src="assets/models/walk.glb"></a-asset-item>
+      <a-asset-item id="city" src="assets/models/city.glb"></a-asset-item>
+      <!-- <a-asset-item id="scene" src="assets/models/scene.glb"></a-asset-item> -->
+      <!-- <a-asset-item id="box" src="assets/models/box.glb"></a-asset-item> -->
+      <!-- <a-asset-item id="walk" src="assets/models/walk.glb"></a-asset-item> -->
+      <!-- <a-asset-item id="mountain" src="assets/models/mountain.glb"></a-asset-item> -->
+      <!-- <a-asset-item id="mountain1" src="assets/models/mountain1.glb"></a-asset-item> -->
     </a-assets>
-    <a-sky color="#ECECEC"></a-sky>
 
-    <a-entity id="camera" camera="active: true"></a-entity>
+    <!-- <a-entity camera="active: true" position="24.11031 7.4986 22.30502" rotation="0 43.855908512698605 0"></a-entity> -->
 
-    <a-entity gltf-part="src: #scene; part: pig" position="0 2 -3"></a-entity>
-    <a-entity gltf-part="src: #scene; part: toy" position="2 0 -3"></a-entity>
-    <a-entity gltf-part="src: #scene; part: toy" material="shader: fresnel; color: '#5485ff'" position="-2 0 -3" ></a-entity>
+    <!-- <a-entity gltf-part="src: #scene; part: pig" position="0 2 -3"></a-entity> -->
+    <!-- <a-entity gltf-part="src: #scene; part: toy" position="2 0 -3"></a-entity> -->
+    <!-- <a-entity gltf-part="src: #scene; part: toy" material="shader: fresnel; color: '#5485ff'" position="-2 0 -3" ></a-entity> -->
 
-    <a-entity gltf-model="#box" position="4 0 -3" animation-mixer></a-entity>
-    <a-entity gltf-model="#walk" position="0 0 0" animation-mixer camera-animation></a-entity>
+    <!-- <a-entity gltf-model="#box" position="4 0 -3" animation-mixer></a-entity> -->
+    <!-- <a-entity gltf-part="src: #walk; part: Character" position="0 0 0" animation-mixer></a-entity> -->
+    <!-- <a-entity custom-gltf-model="#walk" position="0 0 0" animation-mixer></a-entity> -->
+
+    <!-- <a-entity light="type: point; intensity: 100" position="-49.96802 11.48614 -47.35223"></a-entity> -->
+    <!-- <a-sphere material="color:#111; roughness: 0.1;" position="0 0 -3"></a-sphere> -->
+
+    <!-- Area ligth and ground experiment
+    <a-entity gltf-model="#mountain" position="2 7 0" gltf-camera animation-mixer></a-entity>
+    <a-entity custom-gltf-model="#mountain1" position="0 7 0" rotation="0 -45 0"></a-entity>
+    <a-entity area-light="intensity: 2; width: 0.01; height: 100;" position="2.10922 0 -36.9936" rotation="0 180 0" animation="property: area-light.width; to: 8; dur: 10000;"></a-entity>
+    -->
+
+    <!-- <a-entity id="camera" camera="active: true" wasd-controls="acceleration:400"></a-entity> -->
+    <a-entity id="camera" camera look-controls wasd-controls="acceleration: 400" mover quick-turn position="0 1.6 0"></a-entity>
+    <a-entity oculus-go-controls></a-entity>
+    <a-entity oculus-touch-controls="hand: left; orientationOffset: 0 0 0;"></a-entity>
+    <a-entity oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
+
+    <a-entity id="city" position="0 0 0">
+      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; color: black;"></a-entity>
+      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; color: white;"></a-entity>
+      <a-entity gltf-part="src: #city; part: magnetic_field" material="shader: flat; color: black;"></a-entity>
+    </a-entity>
+
   </a-scene>
 </body>
 

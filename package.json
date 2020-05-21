@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "aframe": "^1.0.4",
+    "aframe-area-light-component": "^1.0.1",
     "aframe-extras": "^6.1.0",
     "aframe-gltf-part-component": "^1.2.0"
   },
