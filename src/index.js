@@ -7,12 +7,13 @@ import Mover from './components/Mover';
 import QuickTurn from './components/QuickTurn';
 import GLTFCamera from './components/GLTFCamera';
 import TestSystem from './systems/TestSystem';
-import { Fresnel } from './shaders';
+import { Fresnel, MagneticField } from './shaders';
 
 const THREE = AFRAME.THREE;
 
 // Register all shaders
 AFRAME.registerShader('fresnel', Fresnel);
+AFRAME.registerShader('magneticField', MagneticField);
 
 // Register all systems
 AFRAME.registerSystem('test-system', TestSystem);
@@ -23,6 +24,10 @@ AFRAME.registerComponent('gltf-camera', GLTFCamera);
 AFRAME.registerComponent('area-light', AreaLight);
 AFRAME.registerComponent('mover', Mover);
 AFRAME.registerComponent('quick-turn', QuickTurn);
+
+
+///
+
 
 AFRAME.registerComponent('char', {
   init: function () {
