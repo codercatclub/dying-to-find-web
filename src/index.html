@@ -11,7 +11,7 @@
 <body>
   <a-scene
     renderer="colorManagement: true; physicallyCorrectLights: true;"
-    fog="type: exponential; density: 0.01; color: white;"
+    fog="type: exponential; density: 0.005; color: white;"
     background="color: white"
   >
     <a-assets>
@@ -49,9 +49,10 @@
     <a-entity oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
 
     <a-entity id="city" position="0 0 0">
-      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; color: black;"></a-entity>
-      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; color: white;"></a-entity>
-      <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material="shockMag : 1"></a-entity>
+      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; side: double; color: black;"></a-entity>
+      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; side: double; color: white;"></a-entity>
+      <a-entity gltf-part="src: #city; part: magnetic_field" material="shader: flat; side: double; color: black;"></a-entity>
+      <a-entity gltf-part="src: #city; part: wire_origin" magnetic-material=""></a-entity>
     </a-entity>
 
   </a-scene>
