@@ -11,11 +11,11 @@
 <body>
   <a-scene
     renderer="colorManagement: true; physicallyCorrectLights: true;"
-    fog="type: exponential; density: 0.01; color: white;"
+    fog="type: exponential; density: 0.005; color: white;"
     background="color: white"
   >
     <a-assets>
-      <a-asset-item id="city" src="assets/models/city.glb"></a-asset-item>
+      <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
       <!-- <a-asset-item id="scene" src="assets/models/scene.glb"></a-asset-item> -->
       <!-- <a-asset-item id="box" src="assets/models/box.glb"></a-asset-item> -->
       <!-- <a-asset-item id="walk" src="assets/models/walk.glb"></a-asset-item> -->
@@ -49,9 +49,10 @@
     <a-entity oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
 
     <a-entity id="city" position="0 0 0">
-      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; color: black;"></a-entity>
-      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; color: white;"></a-entity>
-      <a-entity gltf-part="src: #city; part: magnetic_field" material="shader: flat; color: black;"></a-entity>
+      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; side: double; color: black;"></a-entity>
+      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; side: double; color: white;"></a-entity>
+      <a-entity gltf-part="src: #city; part: magnetic_field" material="shader: flat; side: double; color: black;"></a-entity>
+      <a-entity gltf-part="src: #city; part: wire_origin" material="shader: flat; side: double; color: black;"></a-entity>
     </a-entity>
 
   </a-scene>
