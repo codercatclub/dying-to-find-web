@@ -10,8 +10,6 @@ const Mover = {
     this.lastAxis = new THREE.Vector2();
     this.vrMovingSpeed = 0.0039;
 
-
-
     const camera = document.querySelector('#camera');
     this.camera = camera.object3D;
 
@@ -69,7 +67,9 @@ const Mover = {
   },
 
   handleMove: function (move, timeDelta) {
-    this.camera.position.sub(move.multiplyScalar(this.vrMovingSpeed * timeDelta));
+    this.camera.position.sub(
+      move.multiplyScalar(this.vrMovingSpeed * timeDelta),
+    );
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.camera.position);
       this.camera.position.y = this.calculateGroundHeight(this.camera.position);

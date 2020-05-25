@@ -42,7 +42,6 @@ const QuickTurn = {
       if (this.lastAxis.x > 0.7) {
         this.quickTurnTarget -= 45;
         this.allowedToQuickturn = false;
-
       } else if (this.lastAxis.x < -0.7) {
         this.quickTurnTarget += 45;
         this.allowedToQuickturn = false;

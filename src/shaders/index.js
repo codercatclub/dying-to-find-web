@@ -14,8 +14,6 @@ const Fresnel = {
   fragmentShader: FresnelFrag,
 };
 
-
-
 const MagneticField = {
   schema: {
     timeMsec: { type: 'time', is: 'uniform' },
@@ -29,4 +27,4 @@ const MagneticField = {
   fragmentShader: MagneticFieldFrag,
 };
 
-export {Fresnel, MagneticField}
+export { Fresnel, MagneticField };
