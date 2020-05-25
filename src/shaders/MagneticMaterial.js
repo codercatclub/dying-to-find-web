@@ -39,7 +39,6 @@ AFRAME.registerComponent('magnetic-material', {
     initVariables: function (data, type) {
         var key;
         var variables = {};
-        var varType;
         for (key in data) {
             variables[key] = {
                 value: data[key] // Let updateVariables handle setting these.
@@ -51,7 +50,6 @@ AFRAME.registerComponent('magnetic-material', {
     update: function (data) {
         if (!this.magneticMaterial.materialShader) return;
         var key;
-        console.log(this.magneticMaterial.materialShader)
         for (key in data) {
             this.magneticMaterial.materialShader.uniforms[key].value = data[key];
             this.magneticMaterial.materialShader.uniforms[key].needsUpdate = true;
