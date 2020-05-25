@@ -2,22 +2,32 @@ import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 
 const Mover = {
-  schema: {},
+  schema: {
+    groundID: { type: 'string', default: 'ground' },
+    controllerID: { type: 'string', default: 'rightHandContloller' },
+    cameraID: { type: 'string', default: 'camera' },
+    cameraRigID: { type: 'string', default: 'cameraRig' },
+  },
 
   init: function () {
-    this.pressed = false;
-    this.pressedQuest = false;
+    const { groundID, cameraRigID, controllerID, cameraID } = this.data;
+
     this.lastAxis = new THREE.Vector2();
     this.vrMovingSpeed = 0.0039;
 
-    const camera = document.querySelector('#camera');
+    const cameraRigEl = document.querySelector(`#${cameraRigID}`);
+    this.cameraRig = cameraRigEl.object3D;
+
+    const controller = document.querySelector(`#${controllerID}`);
+
+    const camera = document.querySelector(`#${cameraID}`);
     this.camera = camera.object3D;
 
     // ground raycasting
     this.raycaster = new THREE.Raycaster();
-    // TODO: Pass id through schema
-    const ground = document.querySelector('#ground');
+    const ground = document.querySelector(`#${groundID}`);
 
+    // wait for mesh to load
     ground.addEventListener('object3dset', (event) => {
       const group = event.target.object3D;
       const groundMesh = group.getObjectByProperty('type', 'Mesh');
@@ -32,47 +42,35 @@ const Mover = {
     /*
       Oculus remote controller events
     */
-    this.el.addEventListener('trackpaddown', () => {
-      this.pressed = true;
-    });
-
-    this.el.addEventListener('trackpadup', () => {
-      this.pressed = false;
-    });
-
-    this.el.addEventListener('axismove', (evt) => {
+    controller.addEventListener('axismove', (evt) => {
       this.lastAxis.x = evt.detail.axis[2];
       this.lastAxis.y = evt.detail.axis[3];
-    });
-
-    /*
-      Oculus touch controller events
-    */
-    this.el.addEventListener('thumbsticktouchstart', (evt) => {
-      this.pressedQuest = true;
-    });
-    this.el.addEventListener('thumbsticktouchend', (evt) => {
-      this.pressedQuest = false;
     });
   },
 
   tick: function (time, timeDelta) {
     this.camera.getWorldQuaternion(this.worldQuat);
+
     const tweenForward = new THREE.Vector3(
       -this.lastAxis.x,
       0,
       -this.lastAxis.y,
     ).applyQuaternion(this.worldQuat.premultiply(this.camera.quaternion));
+
     this.handleMove(tweenForward, timeDelta);
   },
 
   handleMove: function (move, timeDelta) {
-    this.camera.position.sub(
+    this.cameraRig.position.sub(
       move.multiplyScalar(this.vrMovingSpeed * timeDelta),
     );
+
     if (this.terrain) {
-      const groundHeight = this.calculateGroundHeight(this.camera.position);
-      this.camera.position.y = this.calculateGroundHeight(this.camera.position);
+      const groundHeight = this.calculateGroundHeight(this.cameraRig.position);
+
+      this.cameraRig.position.y = this.calculateGroundHeight(
+        this.cameraRig.position,
+      );
     }
   },
 
