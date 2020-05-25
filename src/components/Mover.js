@@ -7,13 +7,16 @@ const Mover = {
     controllerID: { type: 'string', default: 'rightHandContloller' },
     cameraID: { type: 'string', default: 'camera' },
     cameraRigID: { type: 'string', default: 'cameraRig' },
+    speed: { type: 'number', default: 1 },
   },
 
   init: function () {
-    const { groundID, cameraRigID, controllerID, cameraID } = this.data;
+    const { groundID, cameraRigID, controllerID, cameraID, speed } = this.data;
 
+    this.isVR = false;
+    const scene = this.el.sceneEl;
     this.lastAxis = new THREE.Vector2();
-    this.vrMovingSpeed = 0.0039;
+    this.vrMovingSpeed = 0.0039 * speed;
 
     const cameraRigEl = document.querySelector(`#${cameraRigID}`);
     this.cameraRig = cameraRigEl.object3D;
@@ -34,6 +37,14 @@ const Mover = {
 
       this.terrain = groundMesh;
     });
+
+    if ('xr' in navigator) {
+      navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+        if (supported) {
+          this.isVR = true;
+        }
+      });
+    }
 
     this.down = new THREE.Vector3(0, -1, 0);
     this.origin = new THREE.Vector3();
@@ -57,20 +68,28 @@ const Mover = {
       -this.lastAxis.y,
     ).applyQuaternion(this.worldQuat.premultiply(this.camera.quaternion));
 
-    this.handleMove(tweenForward, timeDelta);
+    if (this.isVR) {
+      this.handleVRMove(tweenForward, timeDelta);
+    } else {
+      this.handleMove(tweenForward, timeDelta);
+    }
   },
 
-  handleMove: function (move, timeDelta) {
+  handleVRMove: function (move, timeDelta) {
     this.cameraRig.position.sub(
       move.multiplyScalar(this.vrMovingSpeed * timeDelta),
     );
 
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.cameraRig.position);
+      this.cameraRig.position.y = groundHeight;
+    }
+  },
 
-      this.cameraRig.position.y = this.calculateGroundHeight(
-        this.cameraRig.position,
-      );
+  handleMove: function (move, timeDelta) {
+    if (this.terrain) {
+      const groundHeight = this.calculateGroundHeight(this.camera.position);
+      this.camera.position.y = groundHeight;
     }
   },
 
@@ -78,7 +97,7 @@ const Mover = {
     this.origin.set(pos.x, 40, pos.z);
     this.raycaster.set(this.origin, this.down);
 
-    var intersects = this.raycaster.intersectObject(this.terrain);
+    let intersects = this.raycaster.intersectObject(this.terrain);
     if (intersects[0]) {
       return intersects[0].point.y + 1;
     }

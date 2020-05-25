@@ -1,33 +1,49 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 
-// quest only
 const QuickTurn = {
-  schema: {},
+  schema: {
+    controllerID: { type: 'string', default: 'leftHandContloller' },
+    cameraRigID: { type: 'string', default: 'cameraRig' },
+  },
 
   init: function () {
+    const { cameraRigID, controllerID } = this.data;
+    const scene = this.el.sceneEl;
+
     this.isVR = false;
     this.allowedToQuickturn = false;
     this.quickTurnTarget = 0;
     this.lastAxis = new THREE.Vector2();
-    this.vrMovingSpeed = 0.0039;
-    this.cam = this.el.object3D;
 
-    this.el.sceneEl.addEventListener('enter-vr', () => {
-      this.isVR = true;
+    const cameraRigEl = document.querySelector(`#${cameraRigID}`);
+    this.cameraRig = cameraRigEl.object3D;
+
+    const controller = document.querySelector(`#${controllerID}`);
+
+    // Only enable quick turn in VR mode and on a headset
+    scene.addEventListener('enter-vr', () => {
+      if ('xr' in navigator) {
+        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+          if (supported) {
+            this.isVR = true;
+          };
+        });
+      }
     });
 
-    const camera = document.querySelector('#camera');
-    this.camera = camera.object3D;
+    scene.addEventListener('exit-vr', () => {
+      this.isVR = false;
+    });
 
     /*
       Oculus touch controller events
     */
-    this.el.addEventListener('thumbsticktouchstart', (evt) => {
+    controller.addEventListener('thumbsticktouchstart', () => {
       this.allowedToQuickturn = true;
     });
 
-    this.el.addEventListener('axismove', (evt) => {
+    controller.addEventListener('axismove', (evt) => {
       this.lastAxis.x = evt.detail.axis[2];
       this.lastAxis.y = evt.detail.axis[3];
 
@@ -51,7 +67,7 @@ const QuickTurn = {
 
   tick: function (time, timeDelta) {
     if (this.isVR) {
-      this.cam.rotation.y = this.quickTurnTarget;
+      this.cameraRig.rotation.y = this.quickTurnTarget;
     }
   },
 };

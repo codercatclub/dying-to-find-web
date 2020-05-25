@@ -26,7 +26,7 @@
         wasd-controls="acceleration: 400"
         look-controls
         quick-turn
-        mover
+        mover="speed: 2"
       >
       </a-entity>
       <a-entity oculus-go-controls></a-entity>
@@ -37,6 +37,7 @@
     <a-entity id="city" position="0 0 0">
       <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; side: double; color: black;"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; side: double; color: white;"></a-entity>
+      <a-entity id="roads" gltf-part="src: #city; part: roads" material="shader: flat; side: double; color: black;"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity gltf-part="src: #city; part: wire_origin" material="shader: flat; side: double; color: black;"></a-entity>
     </a-entity>
