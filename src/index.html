@@ -51,7 +51,7 @@
     <a-entity id="city" position="0 0 0">
       <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; color: black;"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; color: white;"></a-entity>
-      <a-entity gltf-part="src: #city; part: magnetic_field" material="shader: magneticField; color: black;"></a-entity>
+      <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material="shockMag : 1"></a-entity>
     </a-entity>
 
   </a-scene>

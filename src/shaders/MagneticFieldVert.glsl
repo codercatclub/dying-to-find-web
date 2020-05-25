@@ -6,6 +6,9 @@ uniform float shockFreq;
 uniform float pulseSpread;
 uniform float packetLength;
 uniform float trailLength;
+#ifdef USE_FOG
+	varying float fogDepth;
+#endif
 
 void main() {
   float b  = cnoise(50.0 * vec2(uv.y,1.0));
@@ -16,6 +19,13 @@ void main() {
   float shouldClip2 = 1.0 - smoothstep(0.01, 0.01 + trailLength, time);
 
   vec3 newPosition = position;
-  newPosition += 0.6 * shouldClip * normal + shouldClip2 * shockMag * vec3(c,0.0,1.0);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+  newPosition += 0.6 * (shouldClip + 0.3) * normal + shouldClip2 * shockMag * vec3(c,0.0,1.0);
+
+  vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
+
+  #ifdef USE_FOG
+	  fogDepth = -mvPosition.z;
+  #endif
+  gl_Position = projectionMatrix * mvPosition;
+
 }

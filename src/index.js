@@ -8,6 +8,7 @@ import QuickTurn from './components/QuickTurn';
 import GLTFCamera from './components/GLTFCamera';
 import TestSystem from './systems/TestSystem';
 import { Fresnel, MagneticField } from './shaders';
+import './shaders/MagneticMaterial';
 
 const THREE = AFRAME.THREE;
 
