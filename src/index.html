@@ -23,14 +23,14 @@
     <a-entity oculus-touch-controls="hand: left; orientationOffset: 0 0 0;"></a-entity>
     <a-entity oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
 
-    <a-entity id="city" position="0 0 0">
+    <a-entity id="city" position="0 0 0" visible="true">
       <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; side: double; color: black;"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; side: double; color: white;"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity gltf-part="src: #city; part: wire_origin" material="shader: flat; side: double; color: black;"></a-entity>
     </a-entity>
 
-  </a-scene>
+    <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->
 </body>
 
 </html>

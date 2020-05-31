@@ -1,8 +1,8 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 
-import MagneticFieldVert from '../shaders/MagneticFieldVert.glsl';
-import MagneticFieldFrag from '../shaders/MagneticFieldFrag.glsl';
+import CharacterVert from '../shaders/CharacterVert.glsl';
+import CharacterFrag from '../shaders/CharacterFrag.glsl';
 
 export default {
   schema: {
@@ -16,17 +16,21 @@ export default {
 
   init: function () {
     this.uniforms = this.initVariables(this.data);
-    this.magneticMaterial = new THREE.MeshBasicMaterial(this.uniforms);
+    this.magneticMaterial = new THREE.MeshBasicMaterial({
+      side : THREE.DoubleSide,
+      transparent : true
+    });
     this.magneticMaterial.onBeforeCompile = (shader) => {
       shader.uniforms = THREE.UniformsUtils.merge([this.uniforms, shader.uniforms]);
-      shader.vertexShader = MagneticFieldVert;
-      shader.fragmentShader = MagneticFieldFrag;
+      shader.vertexShader = CharacterVert;
+      shader.fragmentShader = CharacterFrag;
       this.materialShader = shader;
     };
-    this.el.addEventListener('object3dset', () => {
-      const mesh = this.el.object3D.getObjectByProperty('type', 'Mesh');
-      mesh.material = this.magneticMaterial;
-    });
+    // this.el.addEventListener('object3dset', () => {
+      this.mesh = this.el.object3D.getObjectByProperty('type', 'Mesh');
+      this.mesh.material = this.magneticMaterial;
+      this.mesh.geometry = new THREE.PlaneBufferGeometry(1,1,100,100);
+    // });
   },
 
   initVariables: function (data, type) {
@@ -56,5 +60,8 @@ export default {
     if (this.materialShader) {
       this.materialShader.uniforms.timeMsec.value = time;
     }
+    //this.mesh.position.x -= 0.0001 * timeDelta;
+    // this.mesh.rotateZ(0.001*timeDelta)
+    // this.mesh.lookAt(2*Math.sin((time+100.0)*0.001), 2*Math.cos((time+100.0)*0.001), Math.cos((time+100.0)*0.001))
   },
 };
