@@ -8,6 +8,7 @@ import QuickTurn from './components/QuickTurn';
 import MagneticMaterial from './components/MagneticMaterial';
 import CharacterMaterial from './components/CharacterMaterial';
 import GLTFCamera from './components/GLTFCamera';
+import GeoInspector from './components/GeoInspector';
 
 import TestSystem from './systems/TestSystem';
 
@@ -26,5 +27,6 @@ AFRAME.registerSystem('test-system', TestSystem);
 AFRAME.registerComponent('gltf-camera', GLTFCamera);
 AFRAME.registerComponent('mover', Mover);
 AFRAME.registerComponent('quick-turn', QuickTurn);
+AFRAME.registerComponent('geo-inspect', GeoInspector);
 AFRAME.registerComponent('magnetic-material', MagneticMaterial);
 AFRAME.registerComponent('character-material', CharacterMaterial);
