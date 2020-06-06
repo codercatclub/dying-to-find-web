@@ -9,28 +9,20 @@
 </head>
 
 <body>
-  <a-scene
-    renderer="colorManagement: true; physicallyCorrectLights: true;"
-    fog="type: exponential; density: 0.005; color: white;"
-    background="color: white"
-  >
+  <a-scene renderer="colorManagement: true; physicallyCorrectLights: true;" background="color: white" fog="type: exponential; density: 0.01; color: white;"
+    cargo-system="character: #character; pathJson: #path" >
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
+      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx"></a-asset-item>
+      <a-asset-item id="path" src="assets/char_path.json"></a-asset-item>
       <audio id="city_background" src="assets/sounds/Dark_SciFi_Drone_Mixed_037.mp3" preload="auto"></audio>
     </a-assets>
 
-    <a-entity sound="src: #city_background; positional: false; autoplay: true; loop: true; volume: 0.5;" ></a-entity>
+    <a-entity sound="src: #city_background; positional: false; autoplay: true; loop: true; volume: 0.5;"></a-entity>
 
     <a-entity id="cameraRig">
-      <a-entity
-        id="camera"
-        position="0 1.6 0"
-        camera
-        wasd-controls="acceleration: 400"
-        look-controls
-        quick-turn
-        mover="speed: 2"
-      >
+      <a-entity id="camera" position="-115 1.6 130" camera wasd-controls="acceleration: 400" look-controls quick-turn
+        mover="speed: 2">
       </a-entity>
       <a-entity oculus-go-controls></a-entity>
       <a-entity id="leftHandContloller" oculus-touch-controls="hand: left; orientationOffset: 0 0 0;"></a-entity>
@@ -44,8 +36,8 @@
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity gltf-part="src: #city; part: wire_origin" material="shader: flat; side: double; color: black;"></a-entity>
     </a-entity>
-
-    <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->
+    </a-scene>
+  <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->
 </body>
 
 </html>

@@ -99,7 +99,7 @@ const Mover = {
 
     let intersects = this.raycaster.intersectObject(this.terrain);
     if (intersects[0]) {
-      return intersects[0].point.y + 1;
+      return intersects[0].point.y + 1.8;
     }
 
     return pos.y;

@@ -13,6 +13,7 @@ import GeoInspector from './components/GeoInspector';
 import TestSystem from './systems/TestSystem';
 
 import { Fresnel, MagneticField } from './shaders';
+import CargoSystem from './systems/CargoSystem';
 
 const THREE = AFRAME.THREE;
 
@@ -22,6 +23,7 @@ AFRAME.registerShader('magneticField', MagneticField);
 
 // Register all systems
 AFRAME.registerSystem('test-system', TestSystem);
+AFRAME.registerSystem('cargo-system', CargoSystem);
 
 // Register all components
 AFRAME.registerComponent('gltf-camera', GLTFCamera);
