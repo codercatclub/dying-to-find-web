@@ -92,7 +92,6 @@ const Mover = {
       this.camera.position.y = groundHeight;
     }
   },
-
   calculateGroundHeight: function (pos) {
     this.origin.set(pos.x, 40, pos.z);
     this.raycaster.set(this.origin, this.down);
@@ -104,6 +103,14 @@ const Mover = {
 
     return pos.y;
   },
+  Teleport: function(pos) {
+    if (this.isVR) {
+      this.cameraRig.position.copy(pos);
+    } else 
+    {
+      this.camera.position.copy(pos);
+    }
+  }
 };
 
 export default Mover;

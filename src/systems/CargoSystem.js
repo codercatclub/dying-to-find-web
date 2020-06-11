@@ -102,7 +102,7 @@ const CargoSystem = {
     this.cargos = []
     for (let i = 0; i < NUM_CARGO; i++) {
       const cargo = this.sharedMainModel.clone();
-      cargo.material = new CargoMaterial({ color: new THREE.Color(0, 0, 0), skinning: true });
+      cargo.material = new THREE.MeshBasicMaterial({ color: new THREE.Color(0, 0, 0), skinning: true });
       cargo.bind(this.sharedSkeleton, cargo.matrixWorld);
       cargo.bindMode = 'detached';
       let point = this.cargoPath[i * SPACING];
@@ -127,16 +127,6 @@ const CargoSystem = {
       cargo.idx += CARGO_SPEED * timeDelta;
       if (cargo.idx >= PATH_DIVISIONS - 1) {
         cargo.idx = 0;
-      }
-      let d = 10;
-      let d2 = 4;
-      if(cargo.idx < d2 || cargo.idx > (PATH_DIVISIONS - d -1))
-      {
-        let transitionAmt = (cargo.idx < d2) ? d2 - cargo.idx : cargo.idx - (PATH_DIVISIONS - d-1);
-        if(cargo.material.shader)
-        {
-          cargo.material.shader.uniforms.stretchAmt.value = transitionAmt;
-        }
       }
 
       let k = Math.floor(cargo.idx);
