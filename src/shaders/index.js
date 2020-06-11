@@ -14,4 +14,4 @@ const MagneticField = {
   fragmentShader: MagneticFieldFrag,
 };
 
-export { Fresnel, MagneticField };
+export { MagneticField };
