@@ -6,9 +6,7 @@ uniform float shockFreq;
 uniform float pulseSpread;
 uniform float packetLength;
 uniform float trailLength;
-#ifdef USE_FOG
-	varying float fogDepth;
-#endif
+#include <fog_pars_vertex> 
 
 void main() {
   float b  = cnoise(50.0 * vec2(uv.y,1.0));
@@ -22,10 +20,7 @@ void main() {
   newPosition += 0.6 * (shouldClip + 0.3) * normal + shouldClip2 * shockMag * vec3(c,0.0,1.0);
 
   vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
-
-  #ifdef USE_FOG
-	  fogDepth = -mvPosition.z;
-  #endif
+  @import ./FogVert;
   gl_Position = projectionMatrix * mvPosition;
 
 }

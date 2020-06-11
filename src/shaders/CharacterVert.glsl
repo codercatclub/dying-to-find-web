@@ -24,7 +24,7 @@ void main() {
   newPosition.z += 0.1 * cos(20.0*inputPos.x + timeMsec/1000.0);
 
   vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
-  #include <fog_vertex>
+  @import ./FogVert;
   gl_Position = projectionMatrix * mvPosition;
 
 }

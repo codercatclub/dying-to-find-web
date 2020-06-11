@@ -11,7 +11,7 @@
 // Distributed under the MIT license. See LICENSE file.
 // https://github.com/ashima/webgl-noise
 //
-#define PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 
 vec3 mod289(vec3 x)
 {
@@ -142,7 +142,7 @@ float cnoise(vec2 P){
   return 2.3 * n_xy;
 }
 
-float rand(vec2 c){
+float randz(vec2 c){
 	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
@@ -151,11 +151,11 @@ float noise(vec2 p, float freq ){
 	vec2 ij = floor(p/unit);
 	vec2 xy = mod(p,unit)/unit;
 	//xy = 3.*xy*xy-2.*xy*xy*xy;
-	xy = .5*(1.-cos(PI*xy));
-	float a = rand((ij+vec2(0.,0.)));
-	float b = rand((ij+vec2(1.,0.)));
-	float c = rand((ij+vec2(0.,1.)));
-	float d = rand((ij+vec2(1.,1.)));
+	xy = .5*(1.-cos(M_PI*xy));
+	float a = randz((ij+vec2(0.,0.)));
+	float b = randz((ij+vec2(1.,0.)));
+	float c = randz((ij+vec2(0.,1.)));
+	float d = randz((ij+vec2(1.,1.)));
 	float x1 = mix(a, b, xy.x);
 	float x2 = mix(c, d, xy.x);
 	return mix(x1, x2, xy.y);

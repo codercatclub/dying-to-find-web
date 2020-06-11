@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <a-scene stats renderer="colorManagement: true; physicallyCorrectLights: true;" background="color: white" fog="type: exponential; density: 0.01; color: white;"
+  <a-scene stats renderer="colorManagement: true; physicallyCorrectLights: true;" background="color: white" fog="type: exponential; density: 0.01; color: #e5e4ec;"
     cargo-system="character: #character; pathJson: #path" >
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
@@ -30,9 +30,9 @@
     </a-entity>
 
     <a-entity id="city" position="0 0 0" visible="true">
-      <a-entity gltf-part="src: #city; part: buildings" material="shader: flat; side: double; color: black;"></a-entity>
-      <a-entity id="ground" gltf-part="src: #city; part: ground" material="shader: flat; side: double; color: white;"></a-entity>
-      <a-entity id="roads" gltf-part="src: #city; part: roads" material="shader: flat; side: double; color: black;"></a-entity>
+      <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
+      <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
+      <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: origin2" julia-material></a-entity>
       <a-entity id="origin2" gltf-part="src: #city; part: wire_origin2" warp-point="exitWarpId: origin1" julia-material></a-entity>

@@ -102,7 +102,7 @@ const CargoSystem = {
     this.cargos = []
     for (let i = 0; i < NUM_CARGO; i++) {
       const cargo = this.sharedMainModel.clone();
-      cargo.material = new THREE.MeshBasicMaterial({ color: new THREE.Color(0, 0, 0), skinning: true });
+      cargo.material = new CargoMaterial({ color: new THREE.Color(0, 0, 0), skinning: true });
       cargo.bind(this.sharedSkeleton, cargo.matrixWorld);
       cargo.bindMode = 'detached';
       let point = this.cargoPath[i * SPACING];

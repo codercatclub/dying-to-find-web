@@ -1,37 +1,32 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 
-import JuliaVert from '../shaders/JuliaVert.glsl';
-import JuliaFrag from '../shaders/JuliaFrag.glsl';
+import CCBasicVert from '../shaders/CCBasicVert.glsl';
+import CCBasicFrag from '../shaders/CCBasicFrag.glsl';
 
 export default {
   schema: {
     timeMsec: { default: 1 },
-    playerPos1: { default: new THREE.Vector4(1000,1000,1000,1) },
-    playerPos2: { default: new THREE.Vector4(0,0,0,1) },
+    color: {type: 'color', default: "#ffffff"}
   },
 
   init: function () {
     this.uniforms = this.initVariables(this.data);
-    this.juliaMaterial = new THREE.MeshBasicMaterial({
+    this.basicMat = new THREE.MeshBasicMaterial({
+      color : new THREE.Color(this.data.color),
       side : THREE.DoubleSide,
-      transparent : true
+      transparent : true,
     });
-    
-    this.juliaMaterial.onBeforeCompile = (shader) => {
+    this.basicMat.onBeforeCompile = (shader) => {
       shader.uniforms = THREE.UniformsUtils.merge([this.uniforms, shader.uniforms]);
-      shader.vertexShader = JuliaVert;
-      shader.fragmentShader = JuliaFrag;
+      shader.vertexShader = CCBasicVert;
+      shader.fragmentShader = CCBasicFrag;
       this.materialShader = shader;
     };
-
     this.el.addEventListener('object3dset', () => {
       this.mesh = this.el.object3D.getObjectByProperty('type', 'Mesh');
-      this.mesh.material = this.juliaMaterial;
+      this.mesh.material = this.basicMat;
     });
-
-    const camera = document.querySelector("#camera");
-    this.camera = camera.object3D;
   },
 
   initVariables: function (data, type) {
@@ -46,7 +41,7 @@ export default {
   },
 
   update: function (data) {
-    if (!this.juliaMaterial.materialShader) {
+    if (!this.basicMat.materialShader) {
       return;
     }
 
@@ -60,7 +55,6 @@ export default {
   tick: function (time, timeDelta) {
     if (this.materialShader) {
       this.materialShader.uniforms.timeMsec.value = time;
-      this.materialShader.uniforms.playerPos2.value = new THREE.Vector4(this.camera.position.x, this.camera.position.y, this.camera.position.z, 1/(10 * 10));
     }
   },
 };
