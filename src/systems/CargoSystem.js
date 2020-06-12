@@ -128,16 +128,6 @@ const CargoSystem = {
       if (cargo.idx >= PATH_DIVISIONS - 1) {
         cargo.idx = 0;
       }
-      let d = 10;
-      let d2 = 4;
-      if(cargo.idx < d2 || cargo.idx > (PATH_DIVISIONS - d -1))
-      {
-        let transitionAmt = (cargo.idx < d2) ? d2 - cargo.idx : cargo.idx - (PATH_DIVISIONS - d-1);
-        if(cargo.material.shader)
-        {
-          cargo.material.shader.uniforms.stretchAmt.value = transitionAmt;
-        }
-      }
 
       let k = Math.floor(cargo.idx);
       let m = cargo.idx - k;

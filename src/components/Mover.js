@@ -82,17 +82,18 @@ const Mover = {
 
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.cameraRig.position);
-      this.cameraRig.position.y = groundHeight;
+      const lerpSpeed = Math.min(0.01*timeDelta, 1);
+      this.cameraRig.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.cameraRig.position.y;
     }
   },
 
   handleMove: function (move, timeDelta) {
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.camera.position);
-      this.camera.position.y = groundHeight;
+      const lerpSpeed = Math.min(0.01*timeDelta, 1);
+      this.camera.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.camera.position.y;
     }
   },
-
   calculateGroundHeight: function (pos) {
     this.origin.set(pos.x, 40, pos.z);
     this.raycaster.set(this.origin, this.down);
@@ -104,6 +105,14 @@ const Mover = {
 
     return pos.y;
   },
+  Teleport: function(pos) {
+    if (this.isVR) {
+      this.cameraRig.position.copy(pos);
+    } else 
+    {
+      this.camera.position.copy(pos);
+    }
+  }
 };
 
 export default Mover;

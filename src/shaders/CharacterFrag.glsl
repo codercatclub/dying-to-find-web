@@ -1,18 +1,9 @@
-@import ./PerlinNoise;
+// @import ./PerlinNoise;
 
-#ifdef USE_FOG
-	uniform vec3 fogColor;
-	varying float fogDepth;
-	#ifdef FOG_EXP2
-		uniform float fogDensity;
-	#else
-		uniform float fogNear;
-		uniform float fogFar;
-	#endif
-#endif
+#include <fog_pars_fragment>
+
 varying vec3 vUv;
 uniform float timeMsec;
-
 
 void main() {
 
@@ -23,4 +14,6 @@ void main() {
   float dif = step(vUv.x - segment,0.1/20.0 + noise2/20.0);
   if(dif < 0.1) discard;
   gl_FragColor= vec4(0.0,0.0,0.0, hide);
+
+  #include <fog_fragment>
 }
