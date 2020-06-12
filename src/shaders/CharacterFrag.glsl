@@ -1,9 +1,8 @@
 // @import ./PerlinNoise;
 
-#include <fog_pars_fragment>
+@import ./FogFragPars;
 
 varying vec3 vUv;
-uniform float timeMsec;
 
 void main() {
 

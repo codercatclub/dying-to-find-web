@@ -1,7 +1,6 @@
-uniform float timeMsec;
 varying vec3 viewDir;
 varying vec3 worldNormal;
-#include <fog_pars_fragment>
+@import ./FogFragPars;
 
 float julia(vec2 p) {
   float x1 = p.x;
@@ -66,7 +65,7 @@ void main() {
   float spectralJulia = 400.0 + 400.0 * max(j.x, j.y);
   vec3 color = spectral_zucconi(spectralJulia);
   gl_FragColor = vec4( color.rg, smoothstep(0.1,1.0, color.b), 1.0 );
-  #include <fog_fragment>
+  @import ./FogFrag;
 }
 
 

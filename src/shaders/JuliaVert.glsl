@@ -1,13 +1,12 @@
 @import ./PerlinNoise;
 
-uniform float timeMsec;
 varying vec3 viewDir;
 varying vec3 worldNormal;
 uniform vec4 playerPos1;
 uniform vec4 playerPos2;
 
 attribute vec3 _primcenter;
-#include <fog_pars_vertex>
+@import ./FogVertPars;
 
 vec4 quat_from_axis_angle(vec3 axis, float angle)
 { 

@@ -1,12 +1,11 @@
 @import ./PerlinNoise;
 
-uniform float timeMsec;
 uniform float shockMag;
 uniform float shockFreq;
 uniform float pulseSpread;
 uniform float packetLength;
 uniform float trailLength;
-#include <fog_pars_vertex> 
+@import ./FogVertPars;
 
 void main() {
   float b  = cnoise(50.0 * vec2(uv.y,1.0));

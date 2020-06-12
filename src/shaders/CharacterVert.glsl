@@ -1,12 +1,11 @@
 @import ./PerlinNoise;
 
-uniform float timeMsec;
 uniform float shockMag;
 uniform float shockFreq;
 uniform float pulseSpread;
 uniform float packetLength;
 uniform float trailLength;
-#include <fog_pars_vertex>
+@import ./FogVertPars;
 varying vec3 vUv;
 
 void main() {
