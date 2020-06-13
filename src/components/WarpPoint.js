@@ -4,21 +4,26 @@ const THREE = AFRAME.THREE;
 const WarpPoint = {
   schema: {
     exitWarpId: { type: 'string', default: 'warp1' },
-    triggerRadius: {default: 10}
+    triggerRadius: {default: 20}
   },
 
   init: function () {
     this.moverComponent = document.querySelector('#camera').components.mover;
-    const exitWarp = document.querySelector(`#${this.data.exitWarpId}`);
+    const exitWarp = document.querySelector(`${this.data.exitWarpId}`);
     
     this.el.addEventListener('object3dset', (event) => {
+      const mesh = event.target.object3D.getObjectByProperty('type', 'Mesh');
       this.enterPoint = new THREE.Vector3();
-      event.target.object3D.getWorldPosition(this.enterPoint);
+      mesh.getWorldPosition(this.enterPoint);
     });
 
     exitWarp.addEventListener('object3dset', (event) => {
+      const mesh = event.target.object3D.getObjectByProperty('type', 'Mesh');
       this.exitPoint = new THREE.Vector3();
-      event.target.object3D.getWorldPosition(this.exitPoint);
+      this.exitDir = new THREE.Vector3();
+      mesh.getWorldPosition(this.exitPoint);
+      mesh.getWorldDirection(this.exitDir);
+      this.exitPoint.add(this.exitDir.multiplyScalar(this.data.triggerRadius + 5));
     });
 
   },
