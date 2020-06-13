@@ -28,10 +28,11 @@ vec3 rotate_vertex_position(vec3 position, vec3 axis, float angle)
 
 void main() {
   vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+  vec4 worldPrimCenter = modelMatrix * vec4( _primcenter, 1.0 );
   worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
   worldPosition.y += 5.0;
   worldPosition.xyz += 2.0*worldNormal;
-  vec3 primCenter = _primcenter +  2.0*worldNormal;
+  vec3 primCenter = worldPrimCenter.xyz +  2.0*worldNormal;
   primCenter.y += 5.0;
 
   vec3 dif1 = worldPosition.xyz - playerPos1.xyz;
@@ -42,7 +43,8 @@ void main() {
   float finalDist = max(dist1, dist2);
   
   // worldPosition.xyz += 5.0 * finalDist * worldNormal;
-  worldPosition.xyz = primCenter + finalDist * worldNormal + (1.0 - smoothstep(0.8,0.9,finalDist)) * rotate_vertex_position(worldPosition.xyz - primCenter, worldNormal,  3.0 * finalDist);
+  //(1.0 - smoothstep(0.1,0.2,finalDist))
+  worldPosition.xyz = primCenter + finalDist * worldNormal + rotate_vertex_position(worldPosition.xyz - primCenter, worldNormal,  3.0 * finalDist);
   viewDir = normalize(dif2);
 
   vec4 mvPosition = viewMatrix * worldPosition;
