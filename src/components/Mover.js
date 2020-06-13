@@ -1,6 +1,16 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 
+var doRoutine = function (coroutine) {
+  var r = coroutine.next();
+  if (!r.done) {
+    coroutine.done = false;
+    requestAnimationFrame(doRoutine.bind(null, coroutine));
+  } else {
+    coroutine.done = true;
+  }
+}
+
 const Mover = {
   schema: {
     groundID: { type: 'string', default: 'ground' },
@@ -24,7 +34,12 @@ const Mover = {
     const controller = document.querySelector(`#${controllerID}`);
 
     const camera = document.querySelector(`#${cameraID}`);
+    this.wasdControls = camera.getAttribute('wasd-controls')
     this.camera = camera.object3D;
+
+    this.viewBlocker = document.querySelector(`#viewBlocker`).object3D;
+    this.viewBlocker.frustumCulled = false;
+    this.viewBlocker.visible = false;
 
     // ground raycasting
     this.raycaster = new THREE.Raycaster();
@@ -57,11 +72,45 @@ const Mover = {
       this.lastAxis.x = evt.detail.axis[2];
       this.lastAxis.y = evt.detail.axis[3];
     });
+
+    this.teleportCoroutine = function* () {
+      //fade in sphere
+      this.viewBlocker.visible = true;
+      let t = 0;
+      while (t <= 1) {
+        this.viewBlocker.scale.set(0.1 * t, 0.1 * t, 0.1 * t);
+        t += 0.01;
+        yield;
+      }
+      t = 1;
+      // wait a few seconds
+      let d = Date.now();
+      while (Date.now() - d < 3000) {
+        yield;
+      }
+      if (this.isVR) {
+        this.cameraRig.position.copy(this.lastTelePos);
+      } else {
+        this.camera.position.copy(this.lastTelePos);
+      }
+      yield;
+      //fade out sphere
+      while (t >= 0) {
+        this.viewBlocker.scale.set(0.1 * t, 0.1 * t, 0.1 * t);
+        t -= 0.01;
+        yield;
+      }
+      this.viewBlocker.visible = false;
+    };
   },
 
   tick: function (time, timeDelta) {
+    if (this.teleportRoutine && !this.teleportRoutine.done) {
+      this.wasdControls.enabled = false;
+      return;
+    };
+    this.wasdControls.enabled = true;
     this.camera.getWorldQuaternion(this.worldQuat);
-
     const tweenForward = new THREE.Vector3(
       -this.lastAxis.x,
       0,
@@ -82,7 +131,7 @@ const Mover = {
 
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.cameraRig.position);
-      const lerpSpeed = Math.min(0.01*timeDelta, 1);
+      const lerpSpeed = Math.min(0.01 * timeDelta, 1);
       this.cameraRig.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.cameraRig.position.y;
     }
   },
@@ -90,7 +139,7 @@ const Mover = {
   handleMove: function (move, timeDelta) {
     if (this.terrain) {
       const groundHeight = this.calculateGroundHeight(this.camera.position);
-      const lerpSpeed = Math.min(0.01*timeDelta, 1);
+      const lerpSpeed = Math.min(0.01 * timeDelta, 1);
       this.camera.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.camera.position.y;
     }
   },
@@ -105,13 +154,14 @@ const Mover = {
 
     return pos.y;
   },
-  Teleport: function(pos) {
-    if (this.isVR) {
-      this.cameraRig.position.copy(pos);
-    } else 
-    {
-      this.camera.position.copy(pos);
+  Teleport: function (pos) {
+    if (this.teleportRoutine && !this.teleportRoutine.done) {
+      return;
     }
+    this.lastTelePos = pos;
+    this.teleportRoutine = this.teleportCoroutine();
+    this.teleportRoutine.done = false;
+    doRoutine(this.teleportRoutine);
   }
 };
 

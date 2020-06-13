@@ -16,14 +16,14 @@ import WarpPoint from './components/WarpPoint';
 
 import TestSystem from './systems/TestSystem';
 
-import { MagneticField } from './shaders';
+import { Julia, MagneticField } from './shaders';
 import CargoSystem from './systems/CargoSystem';
 
 const THREE = AFRAME.THREE;
 
 // Register all shaders
 AFRAME.registerShader('magneticField', MagneticField);
-// AFRAME.registerShader('julia', Julia);
+AFRAME.registerShader('julia', Julia);
 
 // Register all systems
 AFRAME.registerSystem('test-system', TestSystem);

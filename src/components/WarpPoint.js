@@ -8,7 +8,6 @@ const WarpPoint = {
   },
 
   init: function () {
-    this.moverComponent = document.querySelector('#camera').components.mover;
     const exitWarp = document.querySelector(`${this.data.exitWarpId}`);
     
     this.el.addEventListener('object3dset', (event) => {
@@ -31,6 +30,10 @@ const WarpPoint = {
   tick: function (time, timeDelta) {
 
     if(!(this.enterPoint && this.exitPoint)) return;
+    if(!this.moverComponent) {
+      this.moverComponent = document.querySelector('#camera').components.mover;
+      return;
+    }
     let pos = this.moverComponent.camera.position;
     let dist = pos.distanceTo(this.enterPoint);
     if(dist < this.data.triggerRadius)

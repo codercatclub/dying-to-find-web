@@ -30,10 +30,6 @@ void main() {
   vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
   vec4 worldPrimCenter = modelMatrix * vec4( _primcenter, 1.0 );
   worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-  worldPosition.y += 5.0;
-  worldPosition.xyz += 2.0*worldNormal;
-  vec3 primCenter = worldPrimCenter.xyz +  2.0*worldNormal;
-  primCenter.y += 5.0;
 
   vec3 dif1 = worldPosition.xyz - playerPos1.xyz;
   vec3 dif2 = worldPosition.xyz - playerPos2.xyz;
@@ -44,7 +40,7 @@ void main() {
   
   // worldPosition.xyz += 5.0 * finalDist * worldNormal;
   //(1.0 - smoothstep(0.1,0.2,finalDist))
-  worldPosition.xyz = primCenter + finalDist * worldNormal + rotate_vertex_position(worldPosition.xyz - primCenter, worldNormal,  3.0 * finalDist);
+  worldPosition.xyz = worldPrimCenter.xyz + finalDist * worldNormal + rotate_vertex_position(worldPosition.xyz - worldPrimCenter.xyz, worldNormal,  3.0 * finalDist);
   viewDir = normalize(dif2);
 
   vec4 mvPosition = viewMatrix * worldPosition;

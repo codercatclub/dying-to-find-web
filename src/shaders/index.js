@@ -1,6 +1,9 @@
 import MagneticFieldVert from './MagneticFieldVert.glsl';
 import MagneticFieldFrag from './MagneticFieldFrag.glsl';
 
+import JuliaVert from './JuliaVert.glsl';
+import JuliaFrag from './JuliaFrag.glsl';
+
 const MagneticField = {
   schema: {
     timeMsec: { type: 'time', is: 'uniform' },
@@ -14,4 +17,12 @@ const MagneticField = {
   fragmentShader: MagneticFieldFrag,
 };
 
-export { MagneticField };
+const Julia = {
+  schema: {
+    timeMsec: { type: 'time', is: 'uniform' },
+  },
+  vertexShader: JuliaVert,
+  fragmentShader: JuliaFrag,
+};
+
+export { Julia, MagneticField };
