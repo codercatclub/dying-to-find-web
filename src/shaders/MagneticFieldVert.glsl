@@ -18,7 +18,8 @@ void main() {
   vec3 newPosition = position;
   newPosition += 0.6 * (shouldClip + 0.3) * normal + shouldClip2 * shockMag * vec3(c,0.0,1.0);
 
-  vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
+  vec4 worldPosition = modelMatrix * vec4(newPosition, 1.0);
+  vec4 mvPosition = viewMatrix * worldPosition;
   @import ./FogVert;
   gl_Position = projectionMatrix * mvPosition;
 
