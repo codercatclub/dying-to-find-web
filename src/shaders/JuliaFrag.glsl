@@ -1,5 +1,6 @@
 varying vec3 viewDir;
 varying vec3 worldNormal;
+uniform float viewDirMag;
 @import ./FogFragPars;
 
 float julia(vec2 p) {
@@ -60,7 +61,7 @@ void main() {
   c.z +=  0.4*sin(timeMsec/1000.0);
 
   float vReflectionFactor =pow( 1.0 + dot( normalize(viewDir), worldNormal ), 8.0);
-  vec4 j = saturate(julia(0.5 * normalize(worldNormal + 10.0 * vReflectionFactor),c));
+  vec4 j = saturate(julia(0.5 * normalize(worldNormal + viewDirMag * vReflectionFactor),c));
 
   float spectralJulia = 400.0 + 400.0 * max(j.x, j.y);
   vec3 color = spectral_zucconi(spectralJulia);
