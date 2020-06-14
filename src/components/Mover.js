@@ -3,12 +3,7 @@ const THREE = AFRAME.THREE;
 
 var doRoutine = function (coroutine) {
   var r = coroutine.next();
-  if (!r.done) {
-    coroutine.done = false;
-    requestAnimationFrame(doRoutine.bind(null, coroutine));
-  } else {
-    coroutine.done = true;
-  }
+  return r.done;
 }
 
 const Mover = {
@@ -105,10 +100,13 @@ const Mover = {
   },
 
   tick: function (time, timeDelta) {
-    if (this.teleportRoutine && !this.teleportRoutine.done) {
+    if(this.teleportRoutine) {
+      if(doRoutine(this.teleportRoutine)){
+        this.teleportRoutine = null;
+      }
       this.wasdControls.enabled = false;
       return;
-    };
+    }
     this.wasdControls.enabled = true;
     this.camera.getWorldQuaternion(this.worldQuat);
     const tweenForward = new THREE.Vector3(
@@ -155,13 +153,11 @@ const Mover = {
     return pos.y;
   },
   Teleport: function (pos) {
-    if (this.teleportRoutine && !this.teleportRoutine.done) {
+    if (this.teleportRoutine) {
       return;
     }
     this.lastTelePos = pos;
     this.teleportRoutine = this.teleportCoroutine();
-    this.teleportRoutine.done = false;
-    doRoutine(this.teleportRoutine);
   }
 };
 

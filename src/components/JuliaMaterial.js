@@ -32,6 +32,7 @@ export default {
 
     const camera = document.querySelector("#camera");
     this.camera = camera.object3D;
+    this.cameraWorldPosition = new THREE.Vector3();
   },
 
   initVariables: function (data, type) {
@@ -60,7 +61,8 @@ export default {
   tick: function (time, timeDelta) {
     if (this.materialShader) {
       this.materialShader.uniforms.timeMsec.value = time;
-      this.materialShader.uniforms.playerPos2.value = new THREE.Vector4(this.camera.position.x, this.camera.position.y, this.camera.position.z, 1/(10 * 10));
+      this.camera.getWorldPosition(this.cameraWorldPosition);
+      this.materialShader.uniforms.playerPos2.value = new THREE.Vector4(this.cameraWorldPosition.x, this.cameraWorldPosition.y, this.cameraWorldPosition.z, 1/(10 * 10));
     }
   },
 };

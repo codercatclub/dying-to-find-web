@@ -25,6 +25,9 @@ const WarpPoint = {
       this.exitPoint.add(this.exitDir.multiplyScalar(this.data.triggerRadius + 5));
     });
 
+    const camera = document.querySelector("#camera");
+    this.camera = camera.object3D;
+    this.cameraWorldPos = new THREE.Vector3();
   },
 
   tick: function (time, timeDelta) {
@@ -34,8 +37,8 @@ const WarpPoint = {
       this.moverComponent = document.querySelector('#camera').components.mover;
       return;
     }
-    let pos = this.moverComponent.camera.position;
-    let dist = pos.distanceTo(this.enterPoint);
+    this.camera.getWorldPosition(this.cameraWorldPos);
+    let dist = this.cameraWorldPos.distanceTo(this.enterPoint);
     if(dist < this.data.triggerRadius)
     {
       this.moverComponent.Teleport(this.exitPoint);
