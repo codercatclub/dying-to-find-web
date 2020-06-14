@@ -15,7 +15,6 @@ export default {
     this.basicMat = new THREE.MeshBasicMaterial({
       color : new THREE.Color(this.data.color),
       side : THREE.DoubleSide,
-      transparent : true,
     });
     this.basicMat.onBeforeCompile = (shader) => {
       shader.uniforms = THREE.UniformsUtils.merge([this.uniforms, shader.uniforms]);

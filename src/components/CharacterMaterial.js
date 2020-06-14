@@ -18,7 +18,6 @@ export default {
     this.uniforms = this.initVariables(this.data);
     this.magneticMaterial = new THREE.MeshBasicMaterial({
       side : THREE.DoubleSide,
-      transparent : true
     });
     this.magneticMaterial.onBeforeCompile = (shader) => {
       shader.uniforms = THREE.UniformsUtils.merge([this.uniforms, shader.uniforms]);

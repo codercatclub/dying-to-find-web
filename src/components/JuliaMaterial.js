@@ -15,7 +15,6 @@ export default {
     this.uniforms = this.initVariables(this.data);
     this.juliaMaterial = new THREE.MeshBasicMaterial({
       side : THREE.DoubleSide,
-      transparent : true
     });
     
     this.juliaMaterial.onBeforeCompile = (shader) => {

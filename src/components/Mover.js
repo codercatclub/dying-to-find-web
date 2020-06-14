@@ -32,9 +32,13 @@ const Mover = {
     this.wasdControls = camera.getAttribute('wasd-controls')
     this.camera = camera.object3D;
 
-    this.viewBlocker = document.querySelector(`#viewBlocker`).object3D;
+    this.viewBlocker = document.querySelector(`#viewBlocker`).object3D.getObjectByProperty('type', 'Mesh');
     this.viewBlocker.frustumCulled = false;
     this.viewBlocker.visible = false;
+    this.viewBlocker.renderOrder = 100;
+    this.viewBlocker.material.depthTest = false;
+    this.viewBlocker.material.depthWrite = false;
+    
 
     // ground raycasting
     this.raycaster = new THREE.Raycaster();
