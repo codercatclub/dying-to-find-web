@@ -8,7 +8,8 @@ export default {
   schema: {
     timeMsec: { default: 1 },
     playerPos1: { default: new THREE.Vector4(1000,1000,1000,1) },
-    playerPos2: { default: new THREE.Vector4(0,0,0,1) },
+    playerPos2: { default: new THREE.Vector4(1000,1000,1000,1) },
+    viewDirMag: { default: 10 },
   },
 
   init: function () {

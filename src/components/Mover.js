@@ -81,7 +81,6 @@ const Mover = {
         t += 0.01;
         yield;
       }
-      t = 1;
       // wait a few seconds
       let d = Date.now();
       while (Date.now() - d < 3000) {
