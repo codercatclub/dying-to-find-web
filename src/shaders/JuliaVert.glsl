@@ -40,7 +40,7 @@ void main() {
   
   // worldPosition.xyz += 5.0 * finalDist * worldNormal;
   //(1.0 - smoothstep(0.1,0.2,finalDist))
-  worldPosition.xyz = worldPrimCenter.xyz + finalDist * worldNormal + rotate_vertex_position(worldPosition.xyz - worldPrimCenter.xyz, worldNormal,  3.0 * finalDist);
+  worldPosition.xyz = worldPrimCenter.xyz + finalDist * worldNormal + rotate_vertex_position(worldPosition.xyz - worldPrimCenter.xyz, worldNormal,  1.4 * finalDist);
   viewDir = normalize(dif2);
 
   vec4 mvPosition = viewMatrix * worldPosition;

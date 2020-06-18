@@ -4,7 +4,7 @@ const THREE = AFRAME.THREE;
 const WarpPoint = {
   schema: {
     exitWarpId: { type: 'string', default: 'warp1' },
-    triggerRadius: {default: 20}
+    triggerRadius: {default: 15}
   },
 
   init: function () {
@@ -23,6 +23,7 @@ const WarpPoint = {
       mesh.getWorldPosition(this.exitPoint);
       mesh.getWorldDirection(this.exitDir);
       this.exitPoint.add(this.exitDir.multiplyScalar(this.data.triggerRadius + 5));
+      this.exitPoint.y += 0.5;
     });
 
     const camera = document.querySelector("#camera");

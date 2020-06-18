@@ -20,6 +20,7 @@ const MagneticField = {
 const Julia = {
   schema: {
     timeMsec: { type: 'time', is: 'uniform' },
+    cutOff: { type: 'float', is: 'uniform', default: 0 },
     playerPos1: { type: 'vec4', is: 'uniform', default: new THREE.Vector4(1000,1000,1000,1) },
     playerPos2: { type: 'vec4', is: 'uniform', default: new THREE.Vector4(1000,1000,1000,1), },
   },

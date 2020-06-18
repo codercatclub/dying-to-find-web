@@ -7,9 +7,9 @@ import JuliaFrag from '../shaders/JuliaFrag.glsl';
 export default {
   schema: {
     timeMsec: { default: 1 },
-    playerPos1: { default: new THREE.Vector4(1000,1000,1000,1) },
-    playerPos2: { default: new THREE.Vector4(1000,1000,1000,1) },
-    viewDirMag: { default: 10 },
+    playerPos1: { type: "vec4", default: new THREE.Vector4(1000,1000,1000,1) },
+    playerPos2: { type: "vec4", default: new THREE.Vector4(1000,1000,1000,1) },
+    viewDirMag: { default: 1 },
   },
 
   init: function () {
@@ -62,6 +62,10 @@ export default {
     if (this.materialShader) {
       this.materialShader.uniforms.timeMsec.value = time;
       this.camera.getWorldPosition(this.cameraWorldPosition);
+      if(this.cargoToFollow)
+      {
+        this.materialShader.uniforms.playerPos1.value = new THREE.Vector4(this.cargoToFollow.position.x + 0.5*Math.sin(0.001*time), this.cargoToFollow.position.y+2, this.cargoToFollow.position.z+ 0.5*Math.cos(0.001*time), 0.2);
+      }
       this.materialShader.uniforms.playerPos2.value = new THREE.Vector4(this.cameraWorldPosition.x, this.cameraWorldPosition.y, this.cameraWorldPosition.z, 1/(10 * 10));
     }
   },

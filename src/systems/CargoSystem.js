@@ -41,10 +41,18 @@ const CargoSystem = {
       });
     });
 
+    const promiseOfWireOrigin = new Promise((resolve, reject) => {
+      const origin = document.querySelector("#origin1");
+      origin.addEventListener('object3dset', (event) => {
+        resolve(origin.components["julia-material"]);
+      });
+    });
+
     this.initialized = false;
-    Promise.all([promiseOfPath, promiseOfTerrain, promiseOfModel]).then((values) => {
+    Promise.all([promiseOfPath, promiseOfTerrain, promiseOfModel, promiseOfWireOrigin]).then((values) => {
       this.initPath(values[0], values[1])
       this.onModelLoad(values[2])
+      this.originMat = values[3]
       this.initialized = true;
     });
   },
@@ -127,6 +135,10 @@ const CargoSystem = {
       cargo.idx += CARGO_SPEED * timeDelta;
       if (cargo.idx >= PATH_DIVISIONS - 1) {
         cargo.idx = 0;
+      }
+      if(this.originMat && cargo.idx > 10 && cargo.idx < 13)
+      {
+        this.originMat.cargoToFollow = cargo;
       }
 
       let k = Math.floor(cargo.idx);
