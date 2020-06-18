@@ -17,12 +17,13 @@ const WarpPoint = {
     });
 
     exitWarp.addEventListener('object3dset', (event) => {
+      let exitRadius = event.target.components["warp-point"].data.triggerRadius;
       const mesh = event.target.object3D.getObjectByProperty('type', 'Mesh');
       this.exitPoint = new THREE.Vector3();
       this.exitDir = new THREE.Vector3();
       mesh.getWorldPosition(this.exitPoint);
       mesh.getWorldDirection(this.exitDir);
-      this.exitPoint.add(this.exitDir.multiplyScalar(this.data.triggerRadius + 5));
+      this.exitPoint.add(this.exitDir.multiplyScalar(exitRadius + 5));
       this.exitPoint.y += 0.5;
     });
 
@@ -42,7 +43,7 @@ const WarpPoint = {
     let dist = this.cameraWorldPos.distanceTo(this.enterPoint);
     if(dist < this.data.triggerRadius)
     {
-      this.moverComponent.Teleport(this.exitPoint);
+      this.moverComponent.Teleport(this.exitPoint, this.exitDir);
     }
   },
 };

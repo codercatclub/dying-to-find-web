@@ -62,13 +62,14 @@ const QuickTurn = {
         this.quickTurnTarget += 45;
         this.allowedToQuickturn = false;
       }
+      
+      if (this.isVR) {
+        this.cameraRig.rotation.y = this.quickTurnTarget;
+      }
     });
   },
 
   tick: function (time, timeDelta) {
-    if (this.isVR) {
-      this.cameraRig.rotation.y = this.quickTurnTarget;
-    }
   },
 };
 

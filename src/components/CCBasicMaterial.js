@@ -40,7 +40,7 @@ export default {
   },
 
   update: function (data) {
-    if (!this.basicMat.materialShader) {
+    if (!this.materialShader) {
       return;
     }
 

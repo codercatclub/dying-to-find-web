@@ -44,7 +44,7 @@ export default {
   },
 
   update: function (data) {
-    if (!this.magneticMaterial.materialShader) {
+    if (!this.materialShader) {
       return;
     }
 
