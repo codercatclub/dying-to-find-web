@@ -47,7 +47,7 @@ export default {
   },
 
   update: function (data) {
-    if (!this.juliaMaterial.materialShader) {
+    if (!this.materialShader) {
       return;
     }
 

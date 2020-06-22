@@ -30,6 +30,7 @@ const Mover = {
 
     const camera = document.querySelector(`#${cameraID}`);
     this.wasdControls = camera.getAttribute('wasd-controls')
+    this.lookControls = camera.components["look-controls"];
     this.camera = camera.object3D;
 
     this.viewBlocker = document.querySelector(`#viewBlocker`).object3D.getObjectByProperty('type', 'Mesh');
@@ -90,8 +91,10 @@ const Mover = {
       }
       if (this.isVR) {
         this.cameraRig.position.copy(this.lastTelePos);
+        this.cameraRig.rotation.y = Math.PI;
       } else {
         this.camera.position.copy(this.lastTelePos);
+        this.lookControls.yawObject.rotation.y = Math.PI;
       }
       yield;
       //fade out sphere
@@ -158,11 +161,12 @@ const Mover = {
 
     return pos.y;
   },
-  Teleport: function (pos) {
+  Teleport: function (pos, forward) {
     if (this.teleportRoutine) {
       return;
     }
     this.lastTelePos = pos;
+    this.lastTelePos.y = this.calculateGroundHeight(this.lastTelePos);
     this.teleportRoutine = this.teleportCoroutine();
   }
 };
