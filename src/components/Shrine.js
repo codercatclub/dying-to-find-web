@@ -17,7 +17,7 @@ export default {
 
       this.mixer = new THREE.AnimationMixer(model);
       const clips = model.animations;
-
+      
       // Play all clips
       clips.forEach((clip) => {
         this.mixer.clipAction(clip).play();
