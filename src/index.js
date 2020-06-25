@@ -12,7 +12,7 @@ import JuliaMaterial from './components/JuliaMaterial';
 import GLTFCamera from './components/GLTFCamera';
 import GeoInspector from './components/GeoInspector';
 import WarpPoint from './components/WarpPoint';
-import Shrine from './components/Shrine';
+import FBXLoader from './components/FBXLoader';
 
 import TestSystem from './systems/TestSystem';
 
@@ -39,4 +39,4 @@ AFRAME.registerComponent('ccbasic-material', CCBasicMaterial);
 AFRAME.registerComponent('magnetic-material', MagneticMaterial);
 AFRAME.registerComponent('character-material', CharacterMaterial);
 AFRAME.registerComponent('julia-material', JuliaMaterial);
-AFRAME.registerComponent('shrine', Shrine);
+AFRAME.registerComponent('fbx', FBXLoader);
