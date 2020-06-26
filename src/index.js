@@ -8,12 +8,12 @@ import QuickTurn from './components/QuickTurn';
 import MagneticMaterial from './components/MagneticMaterial';
 import CharacterMaterial from './components/CharacterMaterial';
 import CCBasicMaterial from './components/CCBasicMaterial';
-
 import JuliaMaterial from './components/JuliaMaterial';
 import GLTFCamera from './components/GLTFCamera';
 import GeoInspector from './components/GeoInspector';
 import Creature from './components/Creature';
 import WarpPoint from './components/WarpPoint';
+import Shrine from './components/Shrine';
 
 import TestSystem from './systems/TestSystem';
 
@@ -41,3 +41,4 @@ AFRAME.registerComponent('ccbasic-material', CCBasicMaterial);
 AFRAME.registerComponent('magnetic-material', MagneticMaterial);
 AFRAME.registerComponent('character-material', CharacterMaterial);
 AFRAME.registerComponent('julia-material', JuliaMaterial);
+AFRAME.registerComponent('shrine', Shrine);

@@ -7,24 +7,52 @@ import CCBasicFrag from '../shaders/CCBasicFrag.glsl';
 export default {
   schema: {
     timeMsec: { default: 1 },
-    color: {type: 'color', default: "#ffffff"}
+    color: { type: 'color', default: "#ffffff" },
+    vertexColors: { type: 'string', default: '' }
   },
 
   init: function () {
+    const { vertexColors, color } = this.data;
     this.uniforms = this.initVariables(this.data);
-    this.basicMat = new THREE.MeshBasicMaterial({
-      color : new THREE.Color(this.data.color),
-      side : THREE.DoubleSide,
-    });
+
+    const materialOptions = {
+      color: new THREE.Color(color),
+      side: THREE.DoubleSide,
+    }
+
+    switch (vertexColors) {
+      case '':
+        break;
+
+      case 'vertex':
+        materialOptions.vertexColors = THREE.VertexColors;
+        break;
+
+      case 'face':
+        materialOptions.vertexColors = THREE.FaceColors;
+        break;
+    
+      default:
+        console.log('Unknown value for vertexColor parameter. Accepted values are "vertex" or "face".');
+        break;
+    }
+
+    this.basicMat = new THREE.MeshBasicMaterial(materialOptions);
+
     this.basicMat.onBeforeCompile = (shader) => {
       shader.uniforms = THREE.UniformsUtils.merge([this.uniforms, shader.uniforms]);
       shader.vertexShader = CCBasicVert;
       shader.fragmentShader = CCBasicFrag;
       this.materialShader = shader;
     };
+
     this.el.addEventListener('object3dset', () => {
-      this.mesh = this.el.object3D.getObjectByProperty('type', 'Mesh');
-      this.mesh.material = this.basicMat;
+      // Assign material to all child meshes
+      this.el.object3D.traverse(child => {
+        if (child.type === 'Mesh') {
+          child.material = this.basicMat;
+        }
+      });
     });
   },
 
