@@ -1,10 +1,7 @@
-import AFRAME from 'aframe';
+import AFRAME, { utils } from 'aframe';
 const THREE = AFRAME.THREE;
 
-var doRoutine = function (coroutine) {
-  var r = coroutine.next();
-  return r.done;
-}
+import {doRoutine, calculateGroundHeight} from '../Utils'
 
 const Mover = {
   schema: {
@@ -60,9 +57,6 @@ const Mover = {
         }
       });
     }
-
-    this.down = new THREE.Vector3(0, -1, 0);
-    this.origin = new THREE.Vector3();
     this.worldQuat = new THREE.Quaternion();
 
     /*
@@ -137,7 +131,7 @@ const Mover = {
     );
 
     if (this.terrain) {
-      const groundHeight = this.calculateGroundHeight(this.cameraRig.position);
+      const groundHeight = calculateGroundHeight(this.cameraRig.position, this.raycaster, this.terrain) + 1.8;
       const lerpSpeed = Math.min(0.01 * timeDelta, 1);
       this.cameraRig.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.cameraRig.position.y;
     }
@@ -145,28 +139,18 @@ const Mover = {
 
   handleMove: function (move, timeDelta) {
     if (this.terrain) {
-      const groundHeight = this.calculateGroundHeight(this.camera.position);
+      const groundHeight = calculateGroundHeight(this.camera.position, this.raycaster, this.terrain) + 1.8;
       const lerpSpeed = Math.min(0.01 * timeDelta, 1);
       this.camera.position.y = lerpSpeed * groundHeight + (1 - lerpSpeed) * this.camera.position.y;
     }
   },
-  calculateGroundHeight: function (pos) {
-    this.origin.set(pos.x, 40, pos.z);
-    this.raycaster.set(this.origin, this.down);
 
-    let intersects = this.raycaster.intersectObject(this.terrain);
-    if (intersects[0]) {
-      return intersects[0].point.y + 1.8;
-    }
-
-    return pos.y;
-  },
   Teleport: function (pos, forward) {
     if (this.teleportRoutine) {
       return;
     }
     this.lastTelePos = pos;
-    this.lastTelePos.y = this.calculateGroundHeight(this.lastTelePos);
+    this.lastTelePos.y = calculateGroundHeight(this.lastTelePos, this.raycaster, this.terrain) + 1.8;
     this.teleportRoutine = this.teleportCoroutine();
   }
 };

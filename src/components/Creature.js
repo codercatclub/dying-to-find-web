@@ -1,17 +1,18 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 import { MeshLine, MeshLineMaterial } from './MeshLine';
+import {moveTowardsFlat, calculateGroundHeight} from '../Utils'
 
-const DOWN = new THREE.Vector3(0, -1, 0)
+// *** config *** // 
 const KNEE_HEIGHT = 10;
 const HEAD_HEIGHT = 20;
 const NUM_LEGS = 4;
 const BODY_SEGMENTS = 30;
 
-const RUNAWAY_THRESH = 8
-const FOLLOW_THRESH = 14
-const PUSHBACK_DIST = 30
-const TARGET_DIST = 10
+const RUNAWAY_THRESH = 8;
+const FOLLOW_THRESH = 14;
+const PUSHBACK_DIST = 30;
+const TARGET_DIST = 10;
 
 const creatureStates = {
   FOLLOW: 'walke',
@@ -33,7 +34,6 @@ class Leg {
     this.initialLegMidOffsetHelper = this.initialLegMidOffset.clone();
     this.initialLegMid2Offset = new THREE.Vector3(this.geo[this.legmid2 + 0], 0, this.geo[this.legmid2 + 2])
     this.initialLegMid2OffsetHelper = this.initialLegMid2Offset.clone();
-    this.origin = new THREE.Vector3();
     this.lastYLevel = 0.0;
   }
   move(timeDelta, time) {
@@ -52,22 +52,13 @@ class Leg {
     }
     return [this.geo[this.legbottom + 0], this.geo[this.legbottom + 1], this.geo[this.legbottom + 2]]
   }
-  calculateGroundHeight(pos, raycaster, terrain) {
-    this.origin.set(pos.x, 40, pos.z);
-    raycaster.set(this.origin, DOWN);
-    let intersects = raycaster.intersectObject(terrain);
-    if (intersects[0]) {
-      return intersects[0].point.y;
-    }
-    return pos.y;
-  }
   setTarget(target, terrain, raycaster, moveMult, kneeMult) {
     this.moveMult = moveMult;
     this.kneeMult = kneeMult;
     this.target = new THREE.Vector3().addVectors(target, this.initalOffset.clone().multiplyScalar(2 + 1 * Math.random(1)));
     this.yLevel = 0;
     if (terrain) {
-      this.yLevel = this.calculateGroundHeight(this.target, raycaster, terrain);
+      this.yLevel = calculateGroundHeight(this.target, raycaster, terrain);
     }
     this.curLength = this.getDist(this.legbottom, this.target)[0];
     this.isDone = false;
@@ -170,11 +161,19 @@ export default {
     this.raycaster = new THREE.Raycaster();
     const ground = document.querySelector(`#ground`);
 
-    // wait for mesh to load
+    // wait for ground mesh to load
     ground.addEventListener('object3dset', (event) => {
       const group = event.target.object3D;
       const groundMesh = group.getObjectByProperty('type', 'Mesh');
       this.terrain = groundMesh;
+    });
+
+    // wait for lowering target to load
+    const gateLock = document.querySelector(`#gateLock`);
+    gateLock.addEventListener('object3dset', (event) => {
+      const group = event.target.object3D;
+      this.gateLockPosition = group.position.clone();
+      this.gateLockPosition.y = 0;
     });
 
     this.key = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color: "#ff0000" }));
@@ -185,6 +184,8 @@ export default {
     this.camera = camera.object3D;
     this.targetCameraPos = new THREE.Vector3();
     this.targetCameraDir = new THREE.Vector3();
+    this.loweringTargetPos = 
+    this.headBobAmount = 0;
   },
   setTargetPosition: function () {
     this.camera.getWorldPosition(this.targetCameraPos);
@@ -197,13 +198,14 @@ export default {
     this.camera.getWorldPosition(temp1);
     return temp1.distanceTo(this.curPathPoint);
   },
-  handleMovement: function (timeDelta) {
+  handleMovement: function (timeDelta, time) {
     this.setTargetPosition()
     switch (this.creatureState) {
       case creatureStates.FOLLOW: {
+        this.headBobAmount = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
-          let moved = this.moveTowards(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
+          let moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
           let dist = this.distToCamera();
           if (dist < RUNAWAY_THRESH) {
             // later mb this should be a building?
@@ -214,12 +216,17 @@ export default {
             this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 1, 0.5)
           }
         }
+        if(this.gateLockPosition, this.gateLockPosition.distanceTo(this.curPathPoint) < 3)
+        {
+          this.creatureState = creatureStates.LOWER;
+        }
         break;
       }
       case creatureStates.RUN: {
+        this.headBobAmount = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
-          let moved = this.moveTowards(this.curPathPoint, this.runDirectionTarget, timeDelta / 4);
+          let moved = moveTowardsFlat(this.curPathPoint, this.runDirectionTarget, timeDelta / 4);
           let dist = this.distToCamera();
           if (dist > FOLLOW_THRESH && !moved) {
             this.creatureState = creatureStates.FOLLOW;
@@ -230,18 +237,15 @@ export default {
         }
         break;
       }
+      case creatureStates.LOWER: {
+        //do nothing here, handled by coroutine
+        // this.headBobAmount -= timeDelta/500;
+        break;
+      }
     }
-  },
-  moveTowards: function (vec1, vec2, t) {
-    let dist = new THREE.Vector3().subVectors(vec2, vec1);
-    if (dist.length() > t) {
-      vec1.add(dist.normalize().multiplyScalar(t));
-      return true;
-    }
-    return false
   },
   tick: function (time, timeDelta) {
-    this.handleMovement(timeDelta);
+    this.handleMovement(timeDelta, time);
     let averagedPos = new THREE.Vector3();
     this.legs.forEach((leg, idx) => {
       var pos = leg.move(timeDelta / 300, time / 300)
@@ -250,7 +254,7 @@ export default {
       averagedPos.z += pos[2]
     })
     averagedPos.multiplyScalar(1 / this.legs.length);
-    averagedPos.y += 2 * Math.sin(time / 300);
+    averagedPos.y += this.headBobAmount;
     this.body.forEach((idx) => {
       this.mesh.geo[idx] = this.initalGeo[idx] + averagedPos.x;
       this.mesh.geo[idx + 1] = this.initalGeo[idx + 1] + averagedPos.y;
