@@ -11,6 +11,7 @@ import CCBasicMaterial from './components/CCBasicMaterial';
 import JuliaMaterial from './components/JuliaMaterial';
 import GLTFCamera from './components/GLTFCamera';
 import GeoInspector from './components/GeoInspector';
+import Creature from './components/Creature';
 import WarpPoint from './components/WarpPoint';
 import FBXLoader from './components/FBXLoader';
 
@@ -34,6 +35,7 @@ AFRAME.registerComponent('gltf-camera', GLTFCamera);
 AFRAME.registerComponent('mover', Mover);
 AFRAME.registerComponent('quick-turn', QuickTurn);
 AFRAME.registerComponent('geo-inspect', GeoInspector);
+AFRAME.registerComponent('creature', Creature);
 AFRAME.registerComponent('warp-point', WarpPoint);
 AFRAME.registerComponent('ccbasic-material', CCBasicMaterial);
 AFRAME.registerComponent('magnetic-material', MagneticMaterial);
