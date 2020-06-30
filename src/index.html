@@ -24,7 +24,7 @@
     </a-entity>
     <a-entity id="cameraRig">
       <!-- <a-entity id="camera"  position="57.43962 14.2798 -89.31944" camera wasd-controls="acceleration: 400" look-controls quick-turn mover="speed: 2"> -->
-      <a-entity id="camera"  position="0 0 0" camera wasd-controls="acceleration: 400" look-controls quick-turn mover="speed: 2">
+      <a-entity id="camera"  position="0 0 10" camera wasd-controls="acceleration: 400" look-controls quick-turn mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
       </a-entity>
       <a-entity oculus-go-controls></a-entity>
@@ -42,11 +42,10 @@
       <a-entity id="origin_inside1" gltf-part="src: #city; part: wire_origin_inside1" material="shader: julia; side: back;" ></a-entity>
       <a-entity id="origin2" gltf-part="src: #city; part: wire_origin2" warp-point="exitWarpId: #origin1" julia-material></a-entity>
       <a-entity id="shrine" fbx="src: #shrine-asset" ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
-      <a-entity id="shrine-terminal" position="0 1.2 4" scale="1.5 1.5 1.5" fbx="src: #shrine-terminal-asset" ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
+      <a-entity id="shrine-terminal" position="0 1.2 4" scale="4 4 4" fbx="src: #shrine-terminal-asset" ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
       <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
       <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     </a-entity>
-     <a-entity id="gateLock" geometry="primitive: sphere; radius: 2" position="10 6 0"></a-entity>
     </a-scene>
   <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->
 </body>

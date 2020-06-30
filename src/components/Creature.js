@@ -1,7 +1,7 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 import { MeshLine, MeshLineMaterial } from './MeshLine';
-import {moveTowardsFlat, calculateGroundHeight} from '../Utils'
+import { doRoutine, moveTowardsFlat, calculateGroundHeight } from '../Utils'
 
 // *** config *** // 
 const KNEE_HEIGHT = 10;
@@ -52,10 +52,10 @@ class Leg {
     }
     return [this.geo[this.legbottom + 0], this.geo[this.legbottom + 1], this.geo[this.legbottom + 2]]
   }
-  setTarget(target, terrain, raycaster, moveMult, kneeMult) {
+  setTarget(target, terrain, raycaster, moveMult, kneeMult, spreadMult) {
     this.moveMult = moveMult;
     this.kneeMult = kneeMult;
-    this.target = new THREE.Vector3().addVectors(target, this.initalOffset.clone().multiplyScalar(2 + 1 * Math.random(1)));
+    this.target = new THREE.Vector3().addVectors(target, this.initalOffset.clone().multiplyScalar(spreadMult*2 + 1 * Math.random(1)));
     this.yLevel = 0;
     if (terrain) {
       this.yLevel = calculateGroundHeight(this.target, raycaster, terrain);
@@ -168,12 +168,12 @@ export default {
       this.terrain = groundMesh;
     });
 
-    // wait for lowering target to load
-    const gateLock = document.querySelector(`#gateLock`);
-    gateLock.addEventListener('object3dset', (event) => {
+    // wait for shrineDock target to load
+    const shrineTerminal = document.querySelector(`#shrine-terminal`);
+    shrineTerminal.addEventListener('object3dset', (event) => {
       const group = event.target.object3D;
-      this.gateLockPosition = group.position.clone();
-      this.gateLockPosition.y = 0;
+      this.shrineTerminalPosition = group.position.clone();
+      this.shrineTerminalPosition.y = 0;
     });
 
     this.key = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color: "#ff0000" }));
@@ -184,8 +184,8 @@ export default {
     this.camera = camera.object3D;
     this.targetCameraPos = new THREE.Vector3();
     this.targetCameraDir = new THREE.Vector3();
-    this.loweringTargetPos = 
-    this.headBobAmount = 0;
+    this.shrineDockTargetPos =
+    this.headOffsetAmount = new THREE.Vector3();
   },
   setTargetPosition: function () {
     this.camera.getWorldPosition(this.targetCameraPos);
@@ -202,7 +202,7 @@ export default {
     this.setTargetPosition()
     switch (this.creatureState) {
       case creatureStates.FOLLOW: {
-        this.headBobAmount = 2 * Math.sin(time / 300);
+        this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
           let moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
@@ -213,17 +213,17 @@ export default {
             this.creatureState = creatureStates.RUN;
           }
           if (moved) {
-            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 1, 0.5)
+            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 1, 0.5, 1)
           }
         }
-        if(this.gateLockPosition, this.gateLockPosition.distanceTo(this.curPathPoint) < 3)
-        {
+        if (this.shrineTerminalPosition && !this.keyDetached && this.shrineTerminalPosition.distanceTo(this.curPathPoint) < 3) {
           this.creatureState = creatureStates.LOWER;
+          this.shrineDockRoutine = this.shrineDockCoroutine();
         }
         break;
       }
       case creatureStates.RUN: {
-        this.headBobAmount = 2 * Math.sin(time / 300);
+        this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
           let moved = moveTowardsFlat(this.curPathPoint, this.runDirectionTarget, timeDelta / 4);
@@ -232,35 +232,92 @@ export default {
             this.creatureState = creatureStates.FOLLOW;
           }
           if (moved) {
-            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 10, 0.2)
+            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 10, 0.2, 1)
           }
         }
         break;
       }
       case creatureStates.LOWER: {
         //do nothing here, handled by coroutine
-        // this.headBobAmount -= timeDelta/500;
+        if (this.shrineDockRoutine) {
+          if (doRoutine(this.shrineDockRoutine)) {
+            this.shrineDockRoutine = null;
+            // this.creatureState = creatureStates.FOLLOW;
+          }
+        }
+        // this.headOffsetAmount -= timeDelta/500;
         break;
       }
     }
   },
+  shrineDockCoroutine: function* () {
+
+    //align all 4 feet 
+    let counter = 0;
+    while(counter < 4)
+    {
+      if (this.legs[this.curIdx].isDone) {
+        this.curIdx = (this.curIdx + 1) % this.legs.length
+        this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 1, 0.1, 2)
+        counter++
+      }
+      yield;
+    }
+
+    let target = this.shrineTerminalPosition.clone();
+    target.y = 5.1;
+    let originalOffset = this.headOffsetAmount.clone();
+    let t = 0;
+    let targetOffset = new THREE.Vector3().subVectors(target, this.averagedPos);
+    while (t <= 1) {
+      targetOffset.y = target.y - HEAD_HEIGHT - this.averagedPos.y;
+      let e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      this.headOffsetAmount.lerpVectors(originalOffset, targetOffset, e);
+      t += 0.003;
+      yield;
+    }
+    this.headOffsetAmount.lerpVectors(originalOffset, targetOffset, 1);
+
+    // detatch key 
+    this.keyDetached = true;
+    t = 0;
+    originalOffset.copy(this.key.position)
+    while (t <= 1) {
+      let e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      this.key.position.lerpVectors(originalOffset, target, e);
+      t += 0.01;
+      yield;
+    }
+
+    t = 0;
+    originalOffset.copy(this.headOffsetAmount);
+    while (t <= 1) {
+      let e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      this.headOffsetAmount.copy(originalOffset).multiplyScalar(1-e);
+      t += 0.01;
+      yield;
+    }
+    this.creatureState = creatureStates.FOLLOW;
+  },
   tick: function (time, timeDelta) {
     this.handleMovement(timeDelta, time);
-    let averagedPos = new THREE.Vector3();
+    this.averagedPos = new THREE.Vector3();
     this.legs.forEach((leg, idx) => {
       var pos = leg.move(timeDelta / 300, time / 300)
-      averagedPos.x += pos[0]
-      averagedPos.y += pos[1]
-      averagedPos.z += pos[2]
+      this.averagedPos.x += pos[0]
+      this.averagedPos.y += pos[1]
+      this.averagedPos.z += pos[2]
     })
-    averagedPos.multiplyScalar(1 / this.legs.length);
-    averagedPos.y += this.headBobAmount;
+    this.averagedPos.multiplyScalar(1 / this.legs.length);
     this.body.forEach((idx) => {
-      this.mesh.geo[idx] = this.initalGeo[idx] + averagedPos.x;
-      this.mesh.geo[idx + 1] = this.initalGeo[idx + 1] + averagedPos.y;
-      this.mesh.geo[idx + 2] = this.initalGeo[idx + 2] + averagedPos.z;
+      this.mesh.geo[idx] = this.initalGeo[idx] + this.averagedPos.x + this.headOffsetAmount.x;
+      this.mesh.geo[idx + 1] = this.initalGeo[idx + 1] + this.averagedPos.y + this.headOffsetAmount.y;
+      this.mesh.geo[idx + 2] = this.initalGeo[idx + 2] + this.averagedPos.z + this.headOffsetAmount.z;
     })
-    this.key.position.set(averagedPos.x, HEAD_HEIGHT + averagedPos.y, averagedPos.z);
+    if(!this.keyDetached)
+    {
+      this.key.position.set(this.averagedPos.x, HEAD_HEIGHT + this.averagedPos.y, this.averagedPos.z).add(this.headOffsetAmount);
+    }
     this.mirrorVerts.forEach(([idx1, idx2]) => {
       this.mesh.geo[idx2] = this.mesh.geo[idx1];
       this.mesh.geo[idx2 + 1] = this.mesh.geo[idx1 + 1];
