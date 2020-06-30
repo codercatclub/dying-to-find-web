@@ -41,7 +41,6 @@
     </a-entity>
 
     <a-entity id="city" position="0 0 0" visible="true">
-      <a-entity creature></a-entity>
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
@@ -49,15 +48,17 @@
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2" julia-material></a-entity>
       <a-entity id="origin_inside1" gltf-part="src: #city; part: wire_origin_inside1" material="shader: julia; side: back;" ></a-entity>
       <a-entity id="origin2" gltf-part="src: #city; part: wire_origin2" warp-point="exitWarpId: #origin1" julia-material></a-entity>
-      <a-entity id="shrine" position="-183.567 -21.755 -228.852" rotation="0 33.458 0" fbx="src: #shrine-asset" ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
+      <a-entity id="shrine" position="-183.567 -21.755 -228.852" rotation="0 33.458 0" fbx="src: #shrine-asset" animation-player ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
       <a-entity
-        id="shrine-terminal"
-        fbx="src: #shrine-terminal-asset"
-        position="-181.502 -18.208 -199.539"
-        rotation="0 50.691 0" scale="4 4 4"
-        ccbasic-material="color: #ffffff; vertexColors: face;"
+      id="shrine-terminal"
+      fbx="src: #shrine-terminal-asset"
+      animation-player
+      position="-181.502 -18.208 -199.539"
+      rotation="0 50.691 0" scale="4 4 4"
+      ccbasic-material="color: #ffffff; vertexColors: face;"
       >
-      </a-entity>
+    </a-entity>
+    <a-entity creature></a-entity>
       <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
       <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     </a-entity>

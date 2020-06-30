@@ -183,6 +183,12 @@ export default {
       this.shrineTerminalPosition.y = 0;
     });
 
+    const shrine =  document.querySelector('#shrine');
+    shrine.addEventListener('object3dset', (event) => {
+      this.shrineAnimator = shrine.components["animation-player"];
+      this.shrineAnimator.resetAll()
+    });
+
     this.key = new THREE.Mesh(new THREE.SphereGeometry(0.5), new JuliaMaterial());
     this.el.sceneEl.object3D.add(this.key);
 
@@ -295,6 +301,7 @@ export default {
       t += 0.01;
       yield;
     }
+    this.shrineAnimator.playAll()
 
     t = 0;
     originalOffset.copy(this.headOffsetAmount);
