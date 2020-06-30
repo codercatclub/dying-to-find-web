@@ -157,7 +157,12 @@ export default {
     }
     this.body.push(4 * 3 * NUM_LEGS)
     this.curIdx = 0
-    this.curPathPoint = new THREE.Vector3()
+    this.curPathPoint = new THREE.Vector3(-191.502, 0, -199.539)
+
+    for (let i = 0; i < geo.length/3; i++) {
+      geo[3*i] += this.curPathPoint.x
+      geo[3*i + 2] += this.curPathPoint.z
+    }
 
     this.raycaster = new THREE.Raycaster();
     const ground = document.querySelector(`#ground`);
@@ -174,6 +179,7 @@ export default {
     shrineTerminal.addEventListener('object3dset', (event) => {
       const group = event.target.object3D;
       this.shrineTerminalPosition = group.position.clone();
+      this.shrineY = this.shrineTerminalPosition.y;
       this.shrineTerminalPosition.y = 0;
     });
 
@@ -266,7 +272,7 @@ export default {
     }
 
     let target = this.shrineTerminalPosition.clone();
-    target.y = 5.1;
+    target.y = this.shrineY + 4.1;
     let originalOffset = this.headOffsetAmount.clone();
     let t = 0;
     let targetOffset = new THREE.Vector3().subVectors(target, this.averagedPos);
