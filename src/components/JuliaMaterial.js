@@ -4,7 +4,7 @@ const THREE = AFRAME.THREE;
 import JuliaVert from '../shaders/JuliaVert.glsl';
 import JuliaFrag from '../shaders/JuliaFrag.glsl';
 
-export default {
+const JuliaMaterialComponent = {
   schema: {
     timeMsec: { default: 1 },
     playerPos1: { type: "vec4", default: new THREE.Vector4(1000,1000,1000,1) },
@@ -70,3 +70,20 @@ export default {
     }
   },
 };
+
+class JuliaMaterial extends THREE.MeshBasicMaterial {
+  constructor(){
+    super();
+    this.onBeforeCompile = (shader) => {
+      shader.uniforms["timeMsec"] = {value: 0}
+      shader.uniforms.cutOff= { value: 0 }
+      shader.uniforms.playerPos1= { value: new THREE.Vector4(1000,1000,1000,1) }
+      shader.uniforms.playerPos2= { value: new THREE.Vector4(1000,1000,1000,1) }
+      shader.vertexShader = JuliaVert;
+      shader.fragmentShader = JuliaFrag;
+      this.shader = shader;
+    }
+  }
+}
+
+export {JuliaMaterialComponent, JuliaMaterial}

@@ -2,6 +2,7 @@ import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
 import { MeshLine, MeshLineMaterial } from './MeshLine';
 import { doRoutine, moveTowardsFlat, calculateGroundHeight } from '../Utils'
+import {JuliaMaterial} from './JuliaMaterial';
 
 // *** config *** // 
 const KNEE_HEIGHT = 10;
@@ -176,7 +177,7 @@ export default {
       this.shrineTerminalPosition.y = 0;
     });
 
-    this.key = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color: "#ff0000" }));
+    this.key = new THREE.Mesh(new THREE.SphereGeometry(0.5), new JuliaMaterial());
     this.el.sceneEl.object3D.add(this.key);
 
     this.creatureState = creatureStates.FOLLOW;
@@ -326,5 +327,9 @@ export default {
     this.mesh.line.setGeometry(this.mesh.geo, function (p) {
       return (p < 4 * NUM_LEGS / (4 * NUM_LEGS + BODY_SEGMENTS)) ? 1 : 1.4;
     })
+    if(this.key.material.shader)
+    {
+      this.key.material.shader.uniforms.timeMsec.value += timeDelta;
+    }
   },
 };
