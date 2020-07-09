@@ -15,6 +15,7 @@ import Creature from './components/Creature';
 import WarpPoint from './components/WarpPoint';
 import FBXLoader from './components/FBXLoader';
 import AnimationPlayer from './components/AnimationPlayer';
+import VectorFields from './components/VectorFields';
 
 import TestSystem from './systems/TestSystem';
 
@@ -44,3 +45,4 @@ AFRAME.registerComponent('character-material', CharacterMaterial);
 AFRAME.registerComponent('julia-material', JuliaMaterialComponent);
 AFRAME.registerComponent('fbx', FBXLoader);
 AFRAME.registerComponent('animation-player', AnimationPlayer);
+AFRAME.registerComponent('vector-fields', VectorFields);
