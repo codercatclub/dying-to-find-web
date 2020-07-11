@@ -200,6 +200,7 @@ export default {
     this.shrineDockTargetPos =
     this.headOffsetAmount = new THREE.Vector3();
   },
+
   setTargetPosition: function () {
     this.camera.getWorldPosition(this.targetCameraPos);
     this.camera.getWorldDirection(this.targetCameraDir);
@@ -207,10 +208,12 @@ export default {
     this.targetCameraPos.sub(temp1.copy(this.targetCameraDir).multiplyScalar(TARGET_DIST))
     return this.targetCameraPos;
   },
+
   distToCamera: function () {
     this.camera.getWorldPosition(temp1);
     return temp1.distanceTo(this.curPathPoint);
   },
+
   handleMovement: function (timeDelta, time) {
     this.setTargetPosition()
     switch (this.creatureState) {
@@ -263,6 +266,7 @@ export default {
       }
     }
   },
+
   shrineDockCoroutine: function* () {
 
     //align all 4 feet 
@@ -301,7 +305,12 @@ export default {
       t += 0.01;
       yield;
     }
+
+    // Play shrine animation
     this.shrineAnimator.playAll()
+
+    // Play shrine rising sound
+    document.querySelector('#shrine-rising-sound').components["sound"].playSound()
 
     t = 0;
     originalOffset.copy(this.headOffsetAmount);

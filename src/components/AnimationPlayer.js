@@ -7,8 +7,6 @@ export default {
   },
 
   update: function () {
-    const { loop } = this.data;
-    
     this.el.addEventListener('object3dset', (event) => {
       if(event.target.object3D.children.length == 0) {
         console.log("[!] FBX with animation player has no children");
@@ -21,12 +19,6 @@ export default {
       // Play all clips
       this.clips.forEach((clip) => {
         const action = this.mixer.clipAction(clip);
-
-        if (loop === 0) {
-          action.setLoop(THREE.LoopOnce);
-          action.clampWhenFinished = true;
-        }
-
         action.play();
       });
     });
@@ -41,8 +33,17 @@ export default {
 
   playAll: function() {
     this.clips.forEach((clip) => {
-      this.mixer.clipAction(clip).play();
-      this.mixer.clipAction(clip).enabled = true;
+      const { loop } = this.data;
+      const action = this.mixer.clipAction(clip);
+      
+      if (loop === 0) {
+        action.setLoop(THREE.LoopOnce);
+        action.clampWhenFinished = true;
+      }
+
+      action.enabled = true;
+
+      action.play();
     });
   },
 
