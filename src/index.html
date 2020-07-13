@@ -9,6 +9,10 @@
   <style>
     @import url('https://fonts.googleapis.com/css?family=Quicksand:400');
 
+    .a-loader-title {
+      visibility: hidden;
+    }
+
     .btnImage {
       display: inline-block;
       position: absolute;
@@ -63,41 +67,41 @@
 </head>
 
 <body>
-  <!-- Tutorial UI -->
-  <div class="moveTutorialContainer">
-    <div class="tutorialText">USE</div>
-    <svg id="wasd" class="tutorialImg move" xmlns="http://www.w3.org/2000/svg" width="24.4385in" height="16.0026in"
-      viewBox="0 0 1759.5754 1152.1854">
-      <g>
-        <rect x="7" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-        <rect x="609.9489" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-        <rect x="609.9489" y="7" width="542.3443" height="542.3443" rx="25.8264"
-          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-        <rect x="1210.231" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-        <text transform="translate(746.6516 366.5015)"
-          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">W</text>
-        <text transform="translate(191.817 962.022)"
-          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">A</text>
-        <text transform="translate(801.5899 962.022)"
-          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">S</text>
-        <text transform="translate(1393.5104 962.022)"
-          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">D</text>
-      </g>
-    </svg>
-    <div class="tutorialText">TO MOVE</div>
-  </div>
-
-  <!-- Sound UI -->
-  <img class="btnImage" id="soundBtn" src="assets/no-sound.png" alt="sound" title="Toggle sound" />
-
 
   <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff" cargo-system="character: #character; pathJson: #path">
-    <!-- <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    cargo-system="character: #character; pathJson: #path"> -->
+    fog="type: exponential; density: 0.01; color: #ffffff" cargo-system="character: #character; pathJson: #path"
+    loading-screen="backgroundColor: black">
+
+    <!-- Tutorial UI -->
+    <div class="moveTutorialContainer">
+      <div class="tutorialText">USE</div>
+      <svg id="wasd" class="tutorialImg move" xmlns="http://www.w3.org/2000/svg" width="24.4385in" height="16.0026in"
+        viewBox="0 0 1759.5754 1152.1854">
+        <g>
+          <rect x="7" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+          <rect x="609.9489" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+          <rect x="609.9489" y="7" width="542.3443" height="542.3443" rx="25.8264"
+            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+          <rect x="1210.231" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+          <text transform="translate(746.6516 366.5015)"
+            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">W</text>
+          <text transform="translate(191.817 962.022)"
+            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">A</text>
+          <text transform="translate(801.5899 962.022)"
+            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">S</text>
+          <text transform="translate(1393.5104 962.022)"
+            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">D</text>
+        </g>
+      </svg>
+      <div class="tutorialText">TO MOVE</div>
+    </div>
+
+    <!-- Sound UI -->
+    <img class="btnImage" id="soundBtn" src="assets/no-sound.png" alt="sound" title="Toggle sound" />
+
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
       <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx"></a-asset-item>
