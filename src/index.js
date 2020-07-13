@@ -16,6 +16,8 @@ import WarpPoint from './components/WarpPoint';
 import FBXLoader from './components/FBXLoader';
 import AnimationPlayer from './components/AnimationPlayer';
 import VectorFields from './components/VectorFields';
+import WebUIController from './components/WebUIController';
+import SoundController from './components/SoundController';
 
 import TestSystem from './systems/TestSystem';
 
@@ -46,3 +48,5 @@ AFRAME.registerComponent('julia-material', JuliaMaterialComponent);
 AFRAME.registerComponent('fbx', FBXLoader);
 AFRAME.registerComponent('animation-player', AnimationPlayer);
 AFRAME.registerComponent('vector-fields', VectorFields);
+AFRAME.registerComponent('web-ui-controller', WebUIController);
+AFRAME.registerComponent('sound-controller', SoundController);

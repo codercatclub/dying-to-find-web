@@ -6,16 +6,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dying To Find</title>
   <script src="bundle.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand:400');
+
+    .btnImage {
+      display: inline-block;
+      position: absolute;
+      bottom: 15px;
+      left: 20px;
+      z-index: 999;
+      width: 50px;
+      height: 50px;
+      margin-right: 20px;
+    }
+
+    .btnImage:hover {
+      cursor: pointer;
+    }
+
+    .moveTutorialContainer {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 999;
+    }
+
+    .tutorialText,
+    .tutorialImg {
+      display: inline-block;
+      z-index: 999;
+      margin-bottom: 20px;
+      color: black;
+    }
+
+    .tutorialText {
+      font-size: 20px;
+      line-height: 34px;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .tutorialImg {
+      margin-left: 10px;
+      margin-right: 10px;
+      width: 110px;
+      height: 71px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .moveTutorialContainer {
+        visibility: hidden;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <a-scene
-    renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true"
-    background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff"
-    cargo-system="character: #character; pathJson: #path"
-  >
-  <!-- <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
+  <!-- Tutorial UI -->
+  <div class="moveTutorialContainer">
+    <div class="tutorialText">USE</div>
+    <svg id="wasd" class="tutorialImg move" xmlns="http://www.w3.org/2000/svg" width="24.4385in" height="16.0026in"
+      viewBox="0 0 1759.5754 1152.1854">
+      <g>
+        <rect x="7" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+        <rect x="609.9489" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+        <rect x="609.9489" y="7" width="542.3443" height="542.3443" rx="25.8264"
+          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+        <rect x="1210.231" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
+          style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
+        <text transform="translate(746.6516 366.5015)"
+          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">W</text>
+        <text transform="translate(191.817 962.022)"
+          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">A</text>
+        <text transform="translate(801.5899 962.022)"
+          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">S</text>
+        <text transform="translate(1393.5104 962.022)"
+          style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">D</text>
+      </g>
+    </svg>
+    <div class="tutorialText">TO MOVE</div>
+  </div>
+
+  <!-- Sound UI -->
+  <img class="btnImage" id="soundBtn" src="assets/no-sound.png" alt="sound" title="Toggle sound" />
+
+
+  <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
+    fog="type: exponential; density: 0.01; color: #ffffff" cargo-system="character: #character; pathJson: #path">
+    <!-- <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
     cargo-system="character: #character; pathJson: #path"> -->
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
@@ -28,7 +109,9 @@
       <audio id="shrine-rising" src="assets/sounds/Robotic_Mechanism_Extended2.mp3" preload="auto"></audio>
     </a-assets>
 
-    <a-entity sound="src: #city-background-sound; positional: false; autoplay: true; loop: true; volume: 0.5;">
+    <a-entity web-ui-controller />
+
+    <a-entity sound="src: #city-background-sound; positional: false; loop: true; volume: 0.5;" sound-controller>
     </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
@@ -54,11 +137,12 @@
         julia-material></a-entity>
 
       <a-entity position="-183.567 -21.134 -228.852" rotation="0 33.803 0">
-        <a-entity id="shrine" fbx="src: #shrine-asset"
-        animation-player="loop: 0" ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
-        <a-entity id="shrine-rising-sound" sound="src: #shrine-rising; positional: true; autoplay: false; loop: false; volume: 10;"></a-entity>
+        <a-entity id="shrine" fbx="src: #shrine-asset" animation-player="loop: 0"
+          ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
+        <a-entity id="shrine-rising-sound"
+          sound="src: #shrine-rising; positional: true; autoplay: false; loop: false; volume: 10;"></a-entity>
       </a-entity>
-  
+
       <a-entity id="shrine-terminal" fbx="src: #shrine-terminal-asset" animation-player
         position="-181.502 -18.208 -199.539" rotation="0 50.691 0" scale="4 4 4"
         ccbasic-material="color: #ffffff; vertexColors: face;">
