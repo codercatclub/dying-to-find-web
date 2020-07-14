@@ -203,7 +203,6 @@ export default {
 
     //creature walk sound 
     this.walkSound = document.querySelector('#creature-walk-sound').components["sound"];
-    console.log(this.walkSound.el.object3D)
   },
 
   setTargetPosition: function () {
