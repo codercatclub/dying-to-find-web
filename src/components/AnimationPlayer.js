@@ -8,14 +8,19 @@ export default {
 
   update: function () {
     this.el.addEventListener('object3dset', (event) => {
-      if(event.target.object3D.children.length == 0) {
+      if (event.target.object3D.children.length == 0) {
         console.log("[!] FBX with animation player has no children");
         return;
       }
       const model = event.target.object3D.children[0];
       this.mixer = new THREE.AnimationMixer(model);
       this.clips = model.animations;
-      
+
+      if (!this.clips) {
+        console.log("[!] FBX object has no animation clips");
+        return;
+      }
+
       // Play all clips
       this.clips.forEach((clip) => {
         const action = this.mixer.clipAction(clip);
