@@ -93,6 +93,7 @@
       </a-asset-item>
       <audio id="city-background-sound" src="assets/sounds/Dark_SciFi_Drone_Mixed_037.mp3" preload="auto"></audio>
       <audio id="shrine-rising" src="assets/sounds/Robotic_Mechanism_Extended2.mp3" preload="auto"></audio>
+      <audio id="creature-walk" src="assets/sounds/Pinball50.mp3" preload="auto"></audio>
     </a-assets>
 
     <a-entity web-ui-controller />
@@ -133,7 +134,10 @@
         position="-181.502 -18.208 -199.539" rotation="0 50.691 0" scale="4 4 4"
         ccbasic-material="color: #ffffff; vertexColors: face;">
       </a-entity>
-      <a-entity creature></a-entity>
+      <a-entity creature>
+        <a-entity id="creature-walk-sound"
+          sound="src: #creature-walk; positional: true; autoplay: false; loop: false; volume: 3; poolSize: 3"></a-entity>
+      </a-entity>
       <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
       <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     </a-entity>

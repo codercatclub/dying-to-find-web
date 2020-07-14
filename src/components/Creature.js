@@ -199,6 +199,10 @@ export default {
     this.targetCameraDir = new THREE.Vector3();
     this.shrineDockTargetPos =
     this.headOffsetAmount = new THREE.Vector3();
+
+
+    //creature walk sound 
+    this.walkSound = document.querySelector('#creature-walk-sound').components["sound"];
   },
 
   setTargetPosition: function () {
@@ -211,17 +215,19 @@ export default {
 
   distToCamera: function () {
     this.camera.getWorldPosition(temp1);
+    temp1.y = 0;
     return temp1.distanceTo(this.curPathPoint);
   },
 
   handleMovement: function (timeDelta, time) {
     this.setTargetPosition()
+    let moved = false;
     switch (this.creatureState) {
       case creatureStates.FOLLOW: {
         this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
-          let moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
+          moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
           let dist = this.distToCamera();
           if (dist < RUNAWAY_THRESH) {
             // later mb this should be a building?
@@ -242,7 +248,7 @@ export default {
         this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
-          let moved = moveTowardsFlat(this.curPathPoint, this.runDirectionTarget, timeDelta / 4);
+          moved = moveTowardsFlat(this.curPathPoint, this.runDirectionTarget, timeDelta / 4);
           let dist = this.distToCamera();
           if (dist > FOLLOW_THRESH && !moved) {
             this.creatureState = creatureStates.FOLLOW;
@@ -265,10 +271,14 @@ export default {
         break;
       }
     }
+    if (moved) {
+      // walk sound
+      this.walkSound.el.object3D.position.copy(this.curPathPoint);
+      this.walkSound.playSound();
+    }
   },
 
   shrineDockCoroutine: function* () {
-
     //align all 4 feet 
     let counter = 0;
     while(counter < 4)
