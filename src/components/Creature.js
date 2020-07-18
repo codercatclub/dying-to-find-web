@@ -10,16 +10,17 @@ const HEAD_HEIGHT = 20;
 const NUM_LEGS = 4;
 const BODY_SEGMENTS = 30;
 
+const TRIGGER_DIST = 10;
 const RUNAWAY_THRESH = 8;
 const FOLLOW_THRESH = 14;
 const PUSHBACK_DIST = 30;
 const TARGET_DIST = 10;
 
 const creatureStates = {
-  FOLLOW: 'walke',
+  FOLLOW: 'walk',
   IDLE: 'idle',
   JUMP: 'jump',
-  RUN: 'run'
+  RUN: 'run',
 }
 
 const temp1 = new THREE.Vector3();
@@ -91,6 +92,7 @@ class Leg {
 
 export default {
   schema: {
+    spawnPosition: { type: 'vec3' },
   },
 
   init: function () {
@@ -142,7 +144,11 @@ export default {
     this.initalGeo = new Float32Array(geo)
 
     line.setGeometry(geo);
-    var material = new MeshLineMaterial({ color: new THREE.Color(0, 0, 0), lineWidth: 0.2 });
+    var material = new MeshLineMaterial({ 
+      color: new THREE.Color(0, 0, 0), 
+      lineWidth: 0.2,
+      fog : true
+    });
     var mesh = new THREE.Mesh(line.geometry, material);
     mesh.frustumCulled = false;
     mesh.geo = geo;
@@ -156,11 +162,13 @@ export default {
       this.body.push(4 * 3 * i)
     }
     this.body.push(4 * 3 * NUM_LEGS)
-    this.curIdx = 0
-    this.curPathPoint = new THREE.Vector3(-191.502, 0, -199.539)
+    this.curIdx = 0;
+    let spawnPos = this.data.spawnPosition;
+    this.curPathPoint = new THREE.Vector3(spawnPos.x, 0, spawnPos.z);
 
     for (let i = 0; i < geo.length/3; i++) {
       geo[3*i] += this.curPathPoint.x
+      geo[3*i+1] += spawnPos.y
       geo[3*i + 2] += this.curPathPoint.z
     }
 
@@ -193,6 +201,9 @@ export default {
     this.el.sceneEl.object3D.add(this.key);
 
     this.creatureState = creatureStates.FOLLOW;
+    setTimeout(() => {
+      this.creatureState = creatureStates.IDLE;
+    }, 5000);
     const camera = document.querySelector("#camera");
     this.camera = camera.object3D;
     this.targetCameraPos = new THREE.Vector3();
@@ -225,6 +236,13 @@ export default {
     this.setTargetPosition()
     let moved = false;
     switch (this.creatureState) {
+      case creatureStates.IDLE: {
+        if(this.distToCamera() < TRIGGER_DIST)
+        {
+          this.creatureState = creatureStates.FOLLOW;
+        }
+        break;
+      }
       case creatureStates.FOLLOW: {
         this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
