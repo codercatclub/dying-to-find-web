@@ -111,7 +111,8 @@
       </a-asset-item>
       <audio id="city-background-sound" src="assets/sounds/Dark_SciFi_Drone_Mixed_037.mp3" preload="auto"></audio>
       <audio id="shrine-rising" src="assets/sounds/Robotic_Mechanism_Extended2.mp3" preload="auto"></audio>
-      <audio id="creature-walk" src="assets/sounds/Pinball50.mp3" preload="auto"></audio>
+      <audio id="creature-step" src="assets/sounds/Pinball50.mp3" preload="auto"></audio>
+      <audio id="creature-move" src="assets/sounds/servo.mp3" preload="auto"></audio>
     </a-assets>
 
     <a-entity web-ui-controller />
@@ -153,11 +154,17 @@
         ccbasic-material="color: #ffffff; vertexColors: face;">
       </a-entity>
       <a-entity creature>
-        <a-entity id="creature-walk-sound"
-          sound="src: #creature-walk; positional: true; autoplay: false; loop: false; volume: 3; poolSize: 3"></a-entity>
+        <a-entity id="creature-step-sound"
+          sound="src: #creature-step; positional: true; autoplay: false; loop: false; volume: 3; poolSize: 3">
+        </a-entity>
+        <a-entity id="creature-move-sound"
+          sound="src: #creature-move; positional: true; autoplay: false; loop: true; volume: 1;">
+        </a-entity>
       </a-entity>
-      <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
-      <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
+    </a-entity>
+
+    <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
+    <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     </a-entity>
   </a-scene>
   <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->

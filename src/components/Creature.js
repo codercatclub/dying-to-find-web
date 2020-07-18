@@ -201,8 +201,10 @@ export default {
     this.headOffsetAmount = new THREE.Vector3();
 
 
-    //creature walk sound 
-    this.walkSound = document.querySelector('#creature-walk-sound').components["sound"];
+    //creature step sound 
+    this.stepSound = document.querySelector('#creature-step-sound').components["sound"];
+    this.moveSound = document.querySelector('#creature-move-sound').components["sound"];
+    this.moveSound.playSound();
   },
 
   setTargetPosition: function () {
@@ -271,10 +273,11 @@ export default {
         break;
       }
     }
+    this.moveSound.el.object3D.position.copy(this.curPathPoint);
     if (moved) {
       // walk sound
-      this.walkSound.el.object3D.position.copy(this.curPathPoint);
-      this.walkSound.playSound();
+      this.stepSound.el.object3D.position.copy(this.curPathPoint);
+      this.stepSound.playSound();
     }
   },
 
