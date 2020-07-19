@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --colors",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "deploy": "yarn build && rsync -rv dist/ kiko@codercat.tk:/home/kiko/codercat/projects/dtf"
   },
   "keywords": [],
   "author": "",
