@@ -1,5 +1,6 @@
 varying vec3 viewDir;
 varying vec3 worldNormal;
+varying float colorMask;
 uniform float viewDirMag;
 uniform float cutOff;
 @import ./FogFragPars;
@@ -72,7 +73,7 @@ void main() {
   }
 
   vec3 color2 = spectral_zucconi(400.0 + 400.0 * (worldNormal.y*worldNormal.x*worldNormal.z+1.0)*fract(timeMsec/1000.0));
-  gl_FragColor.rgb = max(gl_FragColor.rgb, (1.0 - viewDirMag) * color2);
+  gl_FragColor.rgb = mix(max(gl_FragColor.rgb, (1.0 - viewDirMag) * color2), vec3(1.0, 1.0, 1.0),  colorMask);
 
   @import ./FogFrag;
 }
