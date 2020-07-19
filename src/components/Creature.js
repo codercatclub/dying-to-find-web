@@ -154,7 +154,7 @@ export default {
     mesh.geo = geo;
     mesh.line = line;
     this.mesh = mesh;
-    this.el.sceneEl.object3D.add(mesh)
+    this.el.object3D.add(mesh)
     this.legs = []
 
     for (let i = 0; i < NUM_LEGS; i++) {
@@ -193,12 +193,13 @@ export default {
 
     const shrine =  document.querySelector('#shrine');
     shrine.addEventListener('object3dset', (event) => {
+      this.shrineEntrance = shrine.components["shrine"];
       this.shrineAnimator = shrine.components["animation-player"];
-      this.shrineAnimator.resetAll()
+      this.shrineAnimator.resetAll();
     });
 
     this.key = new THREE.Mesh(new THREE.SphereGeometry(0.5), new JuliaMaterial());
-    this.el.sceneEl.object3D.add(this.key);
+    this.el.object3D.add(this.key);
 
     this.creatureState = creatureStates.FOLLOW;
     setTimeout(() => {
@@ -339,7 +340,9 @@ export default {
 
     // Play shrine animation
     this.shrineAnimator.playAll()
-
+    setTimeout(()=>{
+      this.shrineEntrance.activate()
+    }, 39.34 * 1000);
     // Play shrine rising sound
     document.querySelector('#shrine-rising-sound').components["sound"].playSound()
 

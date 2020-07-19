@@ -1,5 +1,5 @@
 import AFRAME from 'aframe';
-import CargoMaterial from '../components/CargoMaterial'
+import CargoMaterial from './CargoMaterial'
 const THREE = AFRAME.THREE;
 
 //CONFIG
@@ -10,7 +10,7 @@ const CARGO_SPEED = .001;
 const CARGO_ROT_SPEED = .0005;
 const UP_VEC = new THREE.Vector3(0, 1, 0);
 
-const CargoSystem = {
+const Cargo = {
   schema: {
     character: { type: 'model' },
     pathJson: { type: 'model' }
@@ -24,7 +24,7 @@ const CargoSystem = {
     const promiseOfModel = new Promise((resolve, reject) => {
       new THREE.FBXLoader().load(this.data.character, (model) => {
         resolve(model);
-      });
+      }, console.log, console.log);
     });
     const promiseOfPath = new Promise((resolve, reject) => {
       new THREE.FileLoader().load(this.data.pathJson, (json) => {
@@ -103,7 +103,7 @@ const CargoSystem = {
     sharedWalkAnimation.play();
     
     // // The bones need to be in the scene for the animation to work
-    this.el.sceneEl.object3D.add(sharedParentBone);
+    this.el.object3D.add(sharedParentBone);
     this.initializeCharacters();
   },
   initializeCharacters: function () {
@@ -118,7 +118,7 @@ const CargoSystem = {
       cargo.position.z = point.z;
       cargo.position.y = 1;
       cargo.scale.set(1.5, 1.5, 1.5);
-      this.el.sceneEl.object3D.add(cargo);
+      this.el.object3D.add(cargo);
       this.cargos.push(cargo)
       cargo.idx = i * SPACING;
       cargo.transitionIdx = 0;
@@ -151,4 +151,4 @@ const CargoSystem = {
   }
 }
 
-export default CargoSystem;
+export default Cargo;

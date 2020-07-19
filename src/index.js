@@ -16,10 +16,11 @@ import WarpPoint from './components/WarpPoint';
 import FBXLoader from './components/FBXLoader';
 import AnimationPlayer from './components/AnimationPlayer';
 import VectorFields from './components/VectorFields';
+import Cargo from './components/Cargo';
+import Shrine from './components/Shrine';
 
 import TestSystem from './systems/TestSystem';
 import SoundSystem from './systems/SoundSystem';
-import CargoSystem from './systems/CargoSystem';
 
 import { Julia, MagneticField } from './shaders';
 
@@ -31,7 +32,6 @@ AFRAME.registerShader('julia', Julia);
 
 // Register all systems
 AFRAME.registerSystem('test-system', TestSystem);
-AFRAME.registerSystem('cargo-system', CargoSystem);
 AFRAME.registerSystem('sound-system', SoundSystem);
 
 // Register all components
@@ -48,3 +48,5 @@ AFRAME.registerComponent('julia-material', JuliaMaterialComponent);
 AFRAME.registerComponent('fbx', FBXLoader);
 AFRAME.registerComponent('animation-player', AnimationPlayer);
 AFRAME.registerComponent('vector-fields', VectorFields);
+AFRAME.registerComponent('cargo', Cargo);
+AFRAME.registerComponent('shrine', Shrine);

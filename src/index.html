@@ -54,7 +54,7 @@
 <body>
 
   <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff" cargo-system="character: #character; pathJson: #path"
+    fog="type: exponential; density: 0.01; color: #ffffff"
     loading-screen="backgroundColor: black">
 
     <!-- Tutorial UI -->
@@ -86,7 +86,7 @@
 
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
-      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx"></a-asset-item>
+      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer"></a-asset-item>
       <a-asset-item id="path" src="assets/char_path.json"></a-asset-item>
       <a-asset-item id="shrine-asset" src="assets/models/shrine.fbx" response-type="arraybuffer"></a-asset-item>
       <a-asset-item id="shrine-terminal-asset" src="assets/models/shrine_terminal.fbx" response-type="arraybuffer">
@@ -103,7 +103,7 @@
     </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="0 0 0" camera wasd-controls="acceleration: 400" look-controls
+      <a-entity id="camera" position="-183.567 -21.134 -228.852" camera wasd-controls="acceleration: 400" look-controls
         quick-turn mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
       </a-entity>
@@ -112,7 +112,7 @@
       <a-entity id="rightHandContloller" oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
     </a-entity>
 
-    <a-entity id="city" position="0 0 0" visible="true">
+    <a-entity id="city-scene" position="0 0 0" visible="true">
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
@@ -125,8 +125,12 @@
         julia-material></a-entity>
 
       <a-entity position="-183.567 -21.134 -228.852" rotation="0 33.803 0">
-        <a-entity id="shrine" fbx="src: #shrine-asset" animation-player="loop: 0"
-          ccbasic-material="color: #ffffff; vertexColors: face;"></a-entity>
+        <a-entity id="shrine" fbx="src: #shrine-asset" shrine animation-player="loop: 0"
+          ccbasic-material="color: #ffffff; vertexColors: face;">
+        </a-entity>
+        <a-entity class="entrance" position="-7.723 0.580 -3.434"></a-entity>
+        <a-entity class="entrance" position="-0.051 0.361 -4.312"></a-entity>
+        <a-entity class="entrance" position="7.436 0.19 -3.376"></a-entity>
         <a-entity id="shrine-rising-sound"
           sound="src: #shrine-rising; positional: true; autoplay: false; loop: false; volume: 10;"></a-entity>
       </a-entity>
@@ -135,7 +139,8 @@
         position="-181.502 -18.208 -199.539" rotation="0 50.691 0" scale="4 4 4"
         ccbasic-material="color: #ffffff; vertexColors: face;">
       </a-entity>
-      <a-entity creature="spawnPosition: -43.633 15.560 -161.365;">
+      <!-- <a-entity creature="spawnPosition: -43.633 15.560 -161.365;"> -->
+      <a-entity creature="spawnPosition: -181.502 -18.208 -199.539;">
         <a-entity id="creature-step-sound"
           sound="src: #creature-step; positional: true; autoplay: false; loop: false; volume: 3; poolSize: 3">
         </a-entity>
@@ -143,10 +148,15 @@
           sound="src: #creature-move; positional: true; autoplay: false; loop: true; volume: 1;">
         </a-entity>
       </a-entity>
+      <a-entity cargo="character: #character; pathJson: #path"></a-entity>
     </a-entity>
 
     <!-- <a-entity id="shrine" gltf-part="src: #city; part: shrine" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
+    </a-entity>
+
+    <a-entity id="void-scene" position="0 0 0" visible="false">
+      <a-entity vector-fields></a-entity>
     </a-entity>
   </a-scene>
   <!-- <a-entity geometry="primitive: plane; height: 1; width: 1; segmentsHeight: 100; segmentsWidth: 100" character-material scale="1 1 1" position="0 1 -2" rotation="-90 0 0"></a-entity>  </a-scene> -->

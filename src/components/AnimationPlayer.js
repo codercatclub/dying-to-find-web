@@ -17,7 +17,7 @@ export default {
       this.clips = model.animations;
 
       if (!this.clips) {
-        console.log("[!] FBX object has no animation clips");
+        console.log("[!] FBX object has no animation clips", event.target);
         return;
       }
 
