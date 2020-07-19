@@ -2,6 +2,7 @@
 
 varying vec3 viewDir;
 varying vec3 worldNormal;
+varying vec3 vColor;
 uniform vec4 playerPos1;
 uniform vec4 playerPos2;
 
@@ -29,6 +30,7 @@ vec3 rotate_vertex_position(vec3 position, vec3 axis, float angle)
 }
 
 void main() {
+  vColor = vec3(1.0, 1.0, 1.0);
   vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
   vec4 worldPrimCenter = modelMatrix * vec4( _primcenter, 1.0 );
   worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
