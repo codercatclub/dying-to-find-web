@@ -5,6 +5,8 @@ varying vec3 worldNormal;
 uniform vec4 playerPos1;
 uniform vec4 playerPos2;
 
+varying float colorMask;
+
 attribute vec3 _primcenter;
 @import ./FogVertPars;
 
@@ -45,6 +47,8 @@ void main() {
 
   vec4 mvPosition = viewMatrix * worldPosition;
   gl_Position = projectionMatrix * mvPosition;
+
+  colorMask = 0.0;
   @import ./FogVert;
 }
 

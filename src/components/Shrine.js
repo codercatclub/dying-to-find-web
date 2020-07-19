@@ -1,5 +1,7 @@
 import AFRAME from 'aframe';
 const THREE = AFRAME.THREE;
+import JuliaFrag from '../shaders/JuliaFrag.glsl';
+import JuliaVert from '../shaders/JuliaPlaneVert.glsl';
 
 const Shrine = {
   schema: {
@@ -19,13 +21,39 @@ const Shrine = {
     
 
     this.isActive = false;
+
+    this.shrineMat = new THREE.ShaderMaterial({
+      uniforms: {
+        timeMsec: { value: 0.0 },
+        viewDirMag: { value: 0.0 },
+      },
+      vertexShader: JuliaVert,
+      fragmentShader: JuliaFrag,
+      side: THREE.DoubleSide
+    });
+
+    this.el.addEventListener('object3dset', () => {
+      this.shrineDoors = []
+      // Assign material to all child meshes
+      event.target.object3D.traverse(child => {
+        if (child.type === 'Mesh') {
+          this.shrineDoors.push(child);
+          child.material = this.shrineMat;
+        }
+      });
+    });
+
   },
 
   activate: function () {
     this.isActive = true;
+    this.shrineDoors.forEach(door => {
+      door.material = this.shrineMat;
+    });
   },
 
   tick: function (time, timeDelta) {
+    this.shrineMat.uniforms.timeMsec.value = time;
     if(!this.moverComponent)
     {
       this.moverComponent = document.querySelector('#camera').components.mover;
