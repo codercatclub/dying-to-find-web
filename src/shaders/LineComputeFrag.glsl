@@ -29,19 +29,20 @@ void main() {
     float dyRot = sin(angle) * dx + cos(angle) * dy;
 
     if (mainPos2.w > 0.999) {
-      // do move random
+      // do move random around player
       prevPos = playerPos;
       prevPos.x += 4.0 * (randz(vec2(mainPos2.x, time + vUv.y)) - 0.5);
       prevPos.y += 4.0 * (randz(vec2(mainPos2.y, time + vUv.y)) - 0.5);
       prevPos.z += 4.0 * (randz(vec2(mainPos2.z, time + vUv.y)) - 0.5);
       alpha -= 0.1;
-    } else {
-
-      if (abs(dxRot + dyRot + dz) < 0.00001) {
-        alpha = 1.0;
-      } else {
-        alpha -= 0.1;
-      }
+    } else if (length(prevPos - playerPos) > 20.0 || abs(dxRot + dyRot + dz) < 0.00001) {
+      prevPos = 20.0 * normalize(prevPos - playerPos) + playerPos;
+      prevPos.x += 0.3 * sin(time + 20.0*vUv.y);
+      prevPos.z += 0.3 * cos(time + 20.0*vUv.y);
+      alpha -= 0.1;
+    }
+    else{
+      alpha -= 0.1;
       prevPos.x += 90.0 * dxRot;
       prevPos.y += 90.0 * dyRot;
       prevPos.z += 90.0 * dz;
