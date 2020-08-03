@@ -68,6 +68,7 @@ export default {
         geometry.setIndex(new THREE.BufferAttribute(index, 1))
         let lineShader = new THREE.MeshBasicMaterial({
             side : THREE.DoubleSide,
+            depthWrite: false
         });
         let myUniforms = {
             positionTex: { value: 0.0 },
