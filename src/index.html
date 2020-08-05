@@ -7,8 +7,7 @@
   <title>Dying To Find</title>
   <script src="bundle.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand:400');
-
+    @import url('https://fonts.googleapis.com/css2?family=Emblema+One&family=Roboto:wght@900&display=swap');
     .a-loader-title {
       visibility: hidden;
     }
@@ -18,7 +17,7 @@
       width: 100%;
       height: 100%;
       justify-content: center;
-      align-items: flex-end;
+      align-items: center;
       z-index: 999;
     }
 
@@ -31,9 +30,9 @@
     }
 
     .tutorialText {
-      font-size: 20px;
+      font-size: 90px;
       line-height: 34px;
-      font-family: 'Quicksand', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
 
     .tutorialImg {
@@ -42,46 +41,25 @@
       width: 110px;
       height: 71px;
     }
-
+    .a-enter-vr-button {
+      display: none;
+    }
     @media screen and (max-width: 600px) {
-      .moveTutorialContainer {
-        visibility: hidden;
-      }
     }
   </style>
 </head>
 
 <body>
 
-  <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff"
+  <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: #000000"
+    fog="type: exponential; density: 0.0; color: #ffffff"
     loading-screen="backgroundColor: black">
 
     <!-- Tutorial UI -->
     <div class="moveTutorialContainer">
-      <div class="tutorialText">USE</div>
-      <svg id="wasd" class="tutorialImg move" xmlns="http://www.w3.org/2000/svg" width="24.4385in" height="16.0026in"
-        viewBox="0 0 1759.5754 1152.1854">
-        <g>
-          <rect x="7" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-          <rect x="609.9489" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-          <rect x="609.9489" y="7" width="542.3443" height="542.3443" rx="25.8264"
-            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-          <rect x="1210.231" y="602.8411" width="542.3443" height="542.3443" rx="25.8276"
-            style="fill: none;stroke: black;stroke-miterlimit: 10;stroke-width: 14px" />
-          <text transform="translate(746.6516 366.5015)"
-            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">W</text>
-          <text transform="translate(191.817 962.022)"
-            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">A</text>
-          <text transform="translate(801.5899 962.022)"
-            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">S</text>
-          <text transform="translate(1393.5104 962.022)"
-            style="font-size: 277.9401550292969px;fill: black;font-family: Quicksand-Regular, Quicksand">D</text>
-        </g>
-      </svg>
-      <div class="tutorialText">TO MOVE</div>
+      <div class="tutorialText">
+        FLUX 
+      </div>
     </div>
 
     <a-assets>
@@ -112,7 +90,7 @@
       <a-entity id="rightHandContloller" oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
     </a-entity>
 
-    <a-entity id="city-scene" position="0 0 0" visible="true">
+    <a-entity id="city-scene" position="0 0 0" visible="false">
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
@@ -155,7 +133,7 @@
     <!-- <a-entity id="shrine-door" gltf-part="src: #city; part: shrine_door" material="shader: flat; side: double; vertexColors: face;"></a-entity> -->
     </a-entity>
 
-    <a-entity id="void-scene" position="0 0 0" visible="false">
+    <a-entity id="void-scene" position="0 0 0" visible="true">
       <a-entity vector-fields></a-entity>
     </a-entity>
   </a-scene>

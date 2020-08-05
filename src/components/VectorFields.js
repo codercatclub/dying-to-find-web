@@ -6,10 +6,10 @@ import LineVert from '../shaders/LineVert.glsl';
 import LineComputeFrag from '../shaders/LineComputeFrag.glsl';
 import LineComputeVert from '../shaders/LineComputeVert.glsl';
 const width = 100;
-const height = 600;
+const height = 1600;
 
 const numSegments = 49
-const numLines = 599;
+const numLines = 1599;
 
 
 export default {
@@ -38,7 +38,7 @@ export default {
                 vertices[lidx + j * 6 + 5] = 0
             }
         }
-        var index = new Uint16Array(3 * 2 * (numSegments - 1)*numLines)
+        var index = new Uint32Array(3 * 2 * (numSegments - 1)*numLines)
         for (let l = 0; l < numLines; l++) {
             let lidx = (numSegments - 1) * 6 * l;  
             let sidx = 2 * numSegments * l;  
