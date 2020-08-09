@@ -27,23 +27,23 @@ export default {
         var geometry = new THREE.BufferGeometry();
         var vertices = new Float32Array(3 * 2 * numSegments*numLines)
         for (let l = 0; l < numLines; l++) {
-            let lidx = numSegments * 6 * l;  
+            let lidx = numSegments * 6 * l;
             for (let j = 0; j < numSegments; j++) {
-                vertices[lidx + j * 6] = 1 + l
-                vertices[lidx + j * 6 + 1] = j
+                vertices[lidx + j * 6] = 0.01 * (1 + l - numLines/2)
+                vertices[lidx + j * 6 + 1] = -0.1*j
                 vertices[lidx + j * 6 + 2] = 0
 
-                vertices[lidx + j * 6 + 3] = -1 + l
-                vertices[lidx + j * 6 + 4] = j
+                vertices[lidx + j * 6 + 3] = 0.01 * (-1 + l - numLines/2)
+                vertices[lidx + j * 6 + 4] = -0.1*j
                 vertices[lidx + j * 6 + 5] = 0
             }
         }
         var index = new Uint32Array(3 * 2 * (numSegments - 1)*numLines)
         for (let l = 0; l < numLines; l++) {
-            let lidx = (numSegments - 1) * 6 * l;  
-            let sidx = 2 * numSegments * l;  
+            let lidx = (numSegments - 1) * 6 * l;
+            let sidx = 2 * numSegments * l;
             for (let j = 0; j < numSegments - 1; j++) {
-                //first triangle 
+                //first triangle
                 index[lidx + 6 * j + 0] = sidx + 2 * j + 0;
                 index[lidx + 6 * j + 1] = sidx + 2 * j + 1;
                 index[lidx + 6 * j + 2] = sidx + 2 * j + 3;
@@ -57,7 +57,7 @@ export default {
         var uv = new Float32Array(2 * 2 * numSegments*numLines)
         for (let l = 0; l < numLines; l++) {
             for (let j = 0; j < 2 * numSegments; j++) {
-                //first segment 
+                //first segment
                 uv[2*(l*2*numSegments + j)] = j / width;
                 uv[2*(l*2*numSegments + j) + 1] = l / height;
             }
@@ -129,7 +129,7 @@ export default {
 
         //UPDATE MATERIALS ON COMPUTE + PARTICLE MESH
         this.computePosMesh.material.uniforms.positionTex.value = this.positionDataTex;
-        
+
     },
 
     render: function () {
@@ -189,4 +189,3 @@ export default {
         this.render();
     },
 };
-
