@@ -26,7 +26,7 @@ const calculateGroundHeight = function(pos, raycaster, terrain) {
     if (intersects[0]) {
         return intersects[0].point.y;
     }
-    return pos.y;
+    return 0;
 }
 
 export { doRoutine, moveTowardsFlat, calculateGroundHeight }
