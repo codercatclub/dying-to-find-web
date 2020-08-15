@@ -5,13 +5,14 @@ uniform float shockFreq;
 uniform float pulseSpread;
 uniform float packetLength;
 uniform float trailLength;
+
 @import ./FogVertPars;
 
 void main() {
   float b  = cnoise(50.0 * vec2(uv.y,1.0));
   float c = cnoise(shockFreq * vec2(uv.x, uv.y + timeMsec/3000.0));
-
-  float time = mod(uv.x + timeMsec/2000.0 + b * pulseSpread, pulseSpread)/pulseSpread;
+  float modif = smoothstep(0.3,0.4,(1.0 - uv.y));
+  float time = mod((1.0 - 0.5*modif)*uv.x + timeMsec/(2000.0) + b * pulseSpread, pulseSpread)/pulseSpread;
   float shouldClip = 1.0 - smoothstep(0.009, 0.009 + packetLength, time);
   float shouldClip2 = 1.0 - smoothstep(0.01, 0.01 + trailLength, time);
 
@@ -22,5 +23,4 @@ void main() {
   vec4 mvPosition = viewMatrix * worldPosition;
   @import ./FogVert;
   gl_Position = projectionMatrix * mvPosition;
-
 }
