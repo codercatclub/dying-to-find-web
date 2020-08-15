@@ -149,6 +149,7 @@ const Mover = {
     if (this.teleportRoutine) {
       return;
     }
+    document.querySelector('#teleport-sound').components["sound"].playSound()
     this.lastTelePos = pos;
     this.lastTelePos.y = calculateGroundHeight(this.lastTelePos, this.raycaster, this.terrain) + 1.8;
     this.teleportRoutine = this.teleportCoroutine();

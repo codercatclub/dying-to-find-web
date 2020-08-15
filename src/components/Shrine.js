@@ -68,9 +68,11 @@ const Shrine = {
       if(dist < 1)
       {
         this.cityScene.setAttribute("visible", "false");
+        document.querySelector('#background-sound').components["sound"].stopSound()
         this.moverComponent.Teleport(new THREE.Vector3());
         setTimeout(()=>{
           this.voidScene.setAttribute("visible", "true");
+          document.querySelector('#void-scene-sound').components["sound"].playSound()
         },2000);
         break;
       }

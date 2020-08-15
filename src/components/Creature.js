@@ -248,7 +248,7 @@ export default {
         this.headOffsetAmount.y = 2 * Math.sin(time / 300);
         if (this.legs[this.curIdx].isDone) {
           this.curIdx = (this.curIdx + 1) % this.legs.length
-          moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 20);
+          moved = moveTowardsFlat(this.curPathPoint, this.targetCameraPos, timeDelta / 10);
           let dist = this.distToCamera();
           if (dist < RUNAWAY_THRESH) {
             // later mb this should be a building?
@@ -256,7 +256,7 @@ export default {
             this.creatureState = creatureStates.RUN;
           }
           if (moved) {
-            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 1, 0.5, 1)
+            this.legs[this.curIdx].setTarget(this.curPathPoint, this.terrain, this.raycaster, 2, 0.5, 1)
           }
         }
         if (this.shrineTerminalPosition && !this.keyDetached && this.shrineTerminalPosition.distanceTo(this.curPathPoint) < 3) {
