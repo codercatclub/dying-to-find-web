@@ -1,5 +1,6 @@
 varying vec3 viewDir;
 varying vec3 worldNormal;
+varying vec3 vColor;
 varying float colorMask;
 uniform float viewDirMag;
 uniform float cutOff;
@@ -56,24 +57,29 @@ vec4 julia(vec3 p, vec4 c) {
 }
 
 void main() {
-  vec4 c = vec4 (-0.4,0.3,-0.0,0.0);
+  vec4 finalColor = vec4(vColor, 1.0);
+  if (colorMask < 0.5) {
+    vec4 c = vec4 (-0.4,0.3,-0.0,0.0);
 
-  c.x +=  0.4*sin(timeMsec/2000.0);
-  c.y +=  0.4*cos(timeMsec/5000.0);
-  c.z +=  0.4*sin(timeMsec/1000.0);
+    c.x +=  0.4*sin(timeMsec/2000.0);
+    c.y +=  0.4*cos(timeMsec/5000.0);
+    c.z +=  0.4*sin(timeMsec/1000.0);
 
-  float vReflectionFactor =pow( 1.0 + dot( normalize(viewDir), worldNormal ), 8.0);
-  vec4 j = saturate(julia(0.5 * normalize(worldNormal + viewDirMag * 10.0 * vReflectionFactor),c));
+    float vReflectionFactor =pow( 1.0 + dot( normalize(viewDir), worldNormal ), 8.0);
+    vec4 j = saturate(julia(0.5 * normalize(worldNormal + viewDirMag * 10.0 * vReflectionFactor),c));
 
-  float spectralJulia = 400.0 + 400.0 * max(j.x, j.y);
-  vec3 color = spectral_zucconi(spectralJulia);
-  gl_FragColor = vec4( color.rg, smoothstep(0.1,1.0, color.b), 1.0 );
-  if(length(gl_FragColor.rgb) < cutOff) {
-    discard;
-  }
+    float spectralJulia = 400.0 + 400.0 * max(j.x, j.y);
+    vec3 color = spectral_zucconi(spectralJulia);
+    finalColor = vec4( color.rg, smoothstep(0.1,1.0, color.b), 1.0 );
+    if (length(finalColor.rgb) < cutOff) {
+      discard;
+    }
 
-  vec3 color2 = spectral_zucconi(400.0 + 400.0 * (worldNormal.y*worldNormal.x*worldNormal.z+1.0)*fract(timeMsec/1000.0));
-  gl_FragColor.rgb = mix(max(gl_FragColor.rgb, (1.0 - viewDirMag) * color2), vec3(1.0, 1.0, 1.0),  colorMask);
+    vec3 color2 = spectral_zucconi(400.0 + 400.0 * (worldNormal.y*worldNormal.x*worldNormal.z+1.0)*fract(timeMsec/1000.0));
+    finalColor.rgb = max(finalColor.rgb, (1.0 - viewDirMag) * color2);
+  } 
+   
+  gl_FragColor = finalColor;
 
   @import ./FogFrag;
 }

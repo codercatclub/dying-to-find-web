@@ -29,7 +29,7 @@ const Shrine = {
       },
       vertexShader: JuliaVert,
       fragmentShader: JuliaFrag,
-      side: THREE.DoubleSide
+      transparent: false,
     });
 
     this.el.addEventListener('object3dset', () => {

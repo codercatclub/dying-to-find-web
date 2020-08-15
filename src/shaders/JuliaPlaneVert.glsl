@@ -3,7 +3,7 @@
 varying vec3 viewDir;
 varying vec3 worldNormal;
 varying float colorMask;
-
+varying vec3 vColor;
 attribute vec3 color;
 
 @import ./FogVertPars;
@@ -15,7 +15,9 @@ void main() {
   viewDir = -mvPosition.xyz;
   gl_Position = projectionMatrix * mvPosition;
 
-  colorMask = color.r;
+  colorMask = 1.0 - uv.r;
+
+  vColor = color;
   @import ./FogVert;
 }
 
