@@ -38,7 +38,7 @@ export default {
                 vertices[lidx + j * 6 + 5] = 0
             }
         }
-        var index = new Uint16Array(3 * 2 * (numSegments - 1)*numLines)
+        var index = new Uint32Array(3 * 2 * (numSegments - 1)*numLines)
         for (let l = 0; l < numLines; l++) {
             let lidx = (numSegments - 1) * 6 * l;  
             let sidx = 2 * numSegments * l;  
