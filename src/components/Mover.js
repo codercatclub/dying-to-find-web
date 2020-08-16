@@ -133,7 +133,7 @@ const Mover = {
     ).applyQuaternion(this.worldQuat.premultiply(this.camera.quaternion));
 
     // Move to direaction of the camera on Mobile devices
-    if (this.touchMove) {
+    if (this.touchMove && !this.isVR) {
       this.camera.getWorldDirection(tweenForward).multiplyScalar(this.data.speed);
     }
 
