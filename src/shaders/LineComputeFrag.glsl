@@ -42,7 +42,6 @@ void main() {
   } else if (vUv.x < 0.02) {
     prevPos = mainPos2.xyz;
     prevPos.x += 0.5;
-    prevPos.z += 0.5;
   } else {
     vec2 m = vUv;
     m.x -= 2. / 99.;
