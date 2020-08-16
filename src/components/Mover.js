@@ -85,7 +85,6 @@ const Mover = {
       this.viewBlocker.visible = true;
       let t = 0;
       while (t <= 1) {
-        this.viewBlocker.scale.set(0.1 * t, 0.1 * t, 0.1 * t);
         this.viewBlocker.material.uniforms.cutOff.value = 1.0 - t;
         t += 0.01;
         yield;
@@ -106,7 +105,6 @@ const Mover = {
       yield;
       //fade out sphere
       while (t >= 0) {
-        this.viewBlocker.scale.set(0.1 * t, 0.1 * t, 0.1 * t);
         this.viewBlocker.material.uniforms.cutOff.value = 1.0 - t;
         t -= 0.01;
         yield;
