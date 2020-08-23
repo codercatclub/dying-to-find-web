@@ -105,7 +105,7 @@
       </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="0 0 0" camera wasd-controls="acceleration: 400" look-controls
+      <a-entity id="camera" position="-4.43153 9.99483 138.004" camera wasd-controls="acceleration: 400" look-controls
         quick-turn mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
         <a-entity id="teleport-sound"
@@ -121,6 +121,10 @@
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
+      <a-entity id="crack" gltf-part="src: #city; part: crack" ccbasic-material="color: #000000"></a-entity>
+      <a-entity id="background" gltf-part="src: #city; part: background" ccbasic-material="color: #ffffff"></a-entity>
+      <a-entity id="power-line" gltf-part="src: #city; part: power_line" ccbasic-material="color: #000000"></a-entity>
+      <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" position="-16.8657 5.80446  134.113" rotation="-9.51365 31.7903 0" scale="1.2 1.2 1.2" ccbasic-material="color: #000000"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2"
         julia-material></a-entity>
