@@ -117,16 +117,17 @@
       <a-entity id="rightHandContloller" oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
     </a-entity>
 
-    <a-entity id="city-scene" position="0 0 0" visible="true">
+    <a-entity id="city-scene" position="0 0 0" visible="true" core-activation="coreId: #power-core; wireId: #power-wires">
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="crack" gltf-part="src: #city; part: crack" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="background" gltf-part="src: #city; part: background" ccbasic-material="color: #ffffff"></a-entity>
-      <a-entity id="power-wires" gltf-part="src: #city; part: power_wires" ccbasic-material="color: #000000"></a-entity>
+
+      <a-entity id="power-wires" gltf-part="src: #city; part: power_wires" power-wire-material></a-entity>
       <a-entity id="power-poles" gltf-part="src: #city; part: power_poles" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" ccbasic-material="color: #000000"></a-entity>
-      <a-entity id="power-core" gltf-part="src: #city; part: power_core" ccbasic-material="color: #ff00ff"></a-entity>
+      <a-entity id="power-core" gltf-part="src: #city; part: power_core" ccbasic-material="color: #000000"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2"
         julia-material></a-entity>
