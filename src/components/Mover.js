@@ -30,6 +30,7 @@ const Mover = {
     this.wasdControls = camera.getAttribute("wasd-controls");
     this.lookControls = camera.components["look-controls"];
     this.camera = camera.object3D;
+    this.lastCameraPosition = new THREE.Vector3();
 
     this.viewBlocker = document
       .querySelector(`#viewBlocker`)
@@ -146,7 +147,6 @@ const Mover = {
     this.cameraRig.position.sub(
       move.multiplyScalar(this.vrMovingSpeed * timeDelta)
     );
-
     if (this.terrain) {
       const groundHeight =
         calculateGroundHeight(
@@ -154,9 +154,15 @@ const Mover = {
           this.raycaster,
           this.terrain
         ) + 1.8;
-      const lerpSpeed = Math.min(0.01 * timeDelta, 1);
-      this.cameraRig.position.y =
+      if(groundHeight < -50)
+      {
+        this.camera.position.copy(this.lastCameraPosition);
+      } else {
+        const lerpSpeed = Math.min(0.01 * timeDelta, 1);
+        this.cameraRig.position.y =
         lerpSpeed * groundHeight + (1 - lerpSpeed) * this.cameraRig.position.y;
+        this.lastCameraPosition.copy(this.camera.position);
+      }
     }
   },
 
@@ -168,9 +174,18 @@ const Mover = {
           this.raycaster,
           this.terrain
         ) + 1.8;
-      const lerpSpeed = Math.min(0.01 * timeDelta, 1);
-      this.camera.position.y =
+      if(groundHeight < -50)
+      {
+        this.camera.position.copy(this.lastCameraPosition);
+        this.wasdControls.enabled = false;
+      } else {
+        this.wasdControls.enabled = true;
+        const lerpSpeed = Math.min(0.01 * timeDelta, 1);
+        this.camera.position.y =
         lerpSpeed * groundHeight + (1 - lerpSpeed) * this.camera.position.y;
+        this.lastCameraPosition.copy(this.camera.position);
+      }
+      
     }
   },
 
