@@ -179,6 +179,7 @@ export default {
         return [target, dataTexture];
     },
     tick: function (time, timeDelta) {
+        if(!this.el.object3D.parent.visible) return;
         this.computePosMesh.material.uniforms.time.value = time/1000;
         if(this.lineMaterial){
             this.lineMaterial.uniforms.timeMsec.value = time/1000;
