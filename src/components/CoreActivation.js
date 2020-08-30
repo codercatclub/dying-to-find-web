@@ -18,9 +18,7 @@ const CoreActivation = {
 
     const wire = document.querySelector(`${this.data.wireId}`);
     wire.addEventListener('object3dset', (event) => {
-      const mesh = event.target.object3D.getObjectByProperty('type', 'Mesh');
-      this.wireMesh = mesh;
-      console.log(this.wireMesh)
+      this.wireMeshMaterial = wire.components["power-wire-material"];
     });
 
     const camera = document.querySelector("#camera");
@@ -32,13 +30,14 @@ const CoreActivation = {
 
   tick: function (time, timeDelta) {
 
-    if(!(this.wireMesh && this.coreMesh) && !this.activated) return;
+    if(!(this.wireMeshMaterial && this.coreMesh) && !this.activated) return;
     this.camera.getWorldPosition(this.cameraWorldPos);
     let dist = this.cameraWorldPos.distanceTo(this.triggerPoint);
     if(dist < 5)
     {
       this.activated = true;
       //start activation routine
+      this.wireMeshMaterial.activate();
     }
   },
 };
