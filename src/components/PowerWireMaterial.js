@@ -7,6 +7,7 @@ import PowerWireFrag from '../shaders/PowerWireFrag.glsl';
 export default {
   schema: {
     timeMsec: { default: 1 },
+    active: { default: 0 },
   },
 
   init: function () {
@@ -22,6 +23,11 @@ export default {
       const mesh = this.el.object3D.getObjectByProperty('type', 'Mesh');
       mesh.material = this.powerWireMaterial;
     });
+  },
+
+  activate: function() {
+    this.data["active"] = 1;
+    this.materialShader.uniforms["active"].value = 1;
   },
 
   initVariables: function (data, type) {

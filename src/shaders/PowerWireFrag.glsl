@@ -1,5 +1,6 @@
 @import ./FogFragPars;
 varying vec2 vUv;
+uniform float active;
 vec3 bump3y (vec3 x, vec3 yoffset)
 {
 	vec3 y = vec3(1.,1.,1.) - x * x;
@@ -23,6 +24,6 @@ void main() {
   float c = cos(47.0 * vUv.x + vUv.y - timeMsec/300.0) * (1.0 + 0.03*cos(timeMsec/30.0) ) * sin(10.0 * vUv.x + vUv.y - timeMsec /600.0);
   vec3 col = spectral_zucconi(400.0 + 200.0*c);
 
-  gl_FragColor = vec4(col, 1.0);
+  gl_FragColor = vec4(active*col, 1.0);
   @import ./FogFrag;
 }
