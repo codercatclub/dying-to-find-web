@@ -30,7 +30,7 @@ const CoreActivation = {
 
   tick: function (time, timeDelta) {
 
-    if(!(this.wireMeshMaterial && this.coreMesh) && !this.activated) return;
+    if(!(this.wireMeshMaterial && this.coreMesh) || this.activated) return;
     this.camera.getWorldPosition(this.cameraWorldPos);
     let dist = this.cameraWorldPos.distanceTo(this.triggerPoint);
     if(dist < 5)
@@ -38,6 +38,8 @@ const CoreActivation = {
       this.activated = true;
       //start activation routine
       this.wireMeshMaterial.activate();
+      console.log(this.coreMesh.material.uniforms)
+      this.coreMesh.material.uniforms["viewDirMag"].value = 0;
     }
   },
 };
