@@ -5,9 +5,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dying To Find</title>
-  <script src="bundle.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Quicksand:400');
+    /* @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400'); */
+
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .quote {
+      width: 80%;
+      margin-bottom: 80px;
+      font-size: 28px;
+      color: rgb(233, 233, 233);
+      font-family: 'Quicksand', sans-serif;
+      /* font-family: 'Fira Mono', monospace; */
+      line-height: 45px;
+    }
+
+    .loading {
+      position: fixed;
+      bottom: 30px;
+      color: rgb(233, 233, 233);
+      font-size: 28px;
+      font-family: 'Quicksand', sans-serif;
+      /* font-family: 'Fira Mono', monospace; */
+    }
+
+    .flash-ligh {
+      font-size: 2em;
+      letter-spacing: 4px;
+      overflow: hidden;
+      background: linear-gradient(90deg, #000, #fff, #000);
+      background-repeat: no-repeat;
+      background-size: 80%;
+      animation: animate 8s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: rgba(255, 255, 255, 0);
+    }
+
+    .author {
+      margin-top: 45px;
+      text-align: right;
+    }
 
     .a-loader-title {
       visibility: hidden;
@@ -27,7 +76,7 @@
       display: inline-block;
       z-index: 999;
       margin-bottom: 20px;
-      color: black;
+      color: rgb(10, 10, 10);
     }
 
     .tutorialText {
@@ -43,6 +92,15 @@
       height: 71px;
     }
 
+    @keyframes animate {
+      0% {
+        background-position: -500%;
+      }
+      100% {
+        background-position: 500%;
+      }
+    }
+
     @media screen and (max-width: 600px) {
       .moveTutorialContainer {
         visibility: hidden;
@@ -52,9 +110,32 @@
 </head>
 
 <body>
+  
+  <div id="loading-screen">
+    <div class="quote flash-ligh">
+      If you look long enough into the void, the void begins to look back through you.
+      <div class="author">Friedrich Nietzsche</div>
+    </div>
+    <div class="loading flash-ligh">Loading...</div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      let ascene = document.querySelector('a-scene');
+      let loadingScreen = document.querySelector('#loading-screen');
+
+      ascene.addEventListener('loaded', function () {
+        // Scene and all assets are fully loaded
+        loadingScreen.style.display = 'none';
+      });
+    });
+  </script>
+
+  <!-- Order does matter here! Bundle should be loaded after loading screen but before main scene.-->
+  <script src="bundle.js"></script>
 
   <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff" loading-screen="backgroundColor: black">
+    fog="type: exponential; density: 0.01; color: #ffffff" loading-screen="enabled: false">
 
     <!-- Tutorial UI -->
     <div class="moveTutorialContainer">
@@ -99,14 +180,14 @@
       <audio id="teleport" src="assets/sounds/teleport.mp3" preload="auto"></audio>
     </a-assets>
 
-    <a-entity web-ui-controller />
+    <a-entity loading-screen />
 
     <a-entity id="background-sound"
       sound="src: #city-background-sound; positional: false; autoplay: true; loop: true; volume: 0.5;" sound-controller>
     </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="-4.43153 9.99483 138.004" camera wasd-controls="acceleration: 400" look-controls
+      <a-entity id="camera" position="-12 6 150" camera wasd-controls="acceleration: 400" look-controls
         quick-turn mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
         <a-entity id="teleport-sound"
