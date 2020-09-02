@@ -54,8 +54,7 @@
 <body>
 
   <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; sortObjects: true" background="color: white"
-    fog="type: exponential; density: 0.01; color: #ffffff"
-    loading-screen="backgroundColor: black">
+    fog="type: exponential; density: 0.01; color: #ffffff" loading-screen="backgroundColor: black">
 
     <!-- Tutorial UI -->
     <div class="moveTutorialContainer">
@@ -86,7 +85,8 @@
 
     <a-assets>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
-      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer">
+      </a-asset-item>
       <a-asset-item id="path" src="assets/char_path.json"></a-asset-item>
       <a-asset-item id="shrine-asset" src="assets/models/shrine.fbx" response-type="arraybuffer"></a-asset-item>
       <a-asset-item id="shrine-terminal-asset" src="assets/models/shrine_terminal.fbx" response-type="arraybuffer">
@@ -101,23 +101,25 @@
 
     <a-entity web-ui-controller />
 
-    <a-entity id="background-sound" sound="src: #city-background-sound; positional: false; autoplay: true; loop: true; volume: 0.5;" sound-controller>
-      </a-entity>
+    <a-entity id="background-sound"
+      sound="src: #city-background-sound; positional: false; autoplay: true; loop: true; volume: 0.5;" sound-controller>
+    </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
       <a-entity id="camera" position="-4.43153 9.99483 138.004" camera wasd-controls="acceleration: 400" look-controls
         quick-turn mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
         <a-entity id="teleport-sound"
-        sound="src: #teleport; positional: true; autoplay: false; loop: false; volume: 1;">
-      </a-entity>
+          sound="src: #teleport; positional: true; autoplay: false; loop: false; volume: 1;">
+        </a-entity>
       </a-entity>
       <a-entity oculus-go-controls></a-entity>
       <a-entity id="leftHandContloller" oculus-touch-controls="hand: left; orientationOffset: 0 0 0;"></a-entity>
       <a-entity id="rightHandContloller" oculus-touch-controls="hand: right; orientationOffset: 0 0 0;"></a-entity>
     </a-entity>
 
-    <a-entity id="city-scene" position="0 0 0" visible="true" core-activation="coreId: #power-core; wireId: #power-wires">
+    <a-entity id="city-scene" position="0 0 0" visible="true"
+      core-activation="coreId: #power-core; wireId: #power-wires">
       <a-entity gltf-part="src: #city; part: buildings" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="ground" gltf-part="src: #city; part: ground" ccbasic-material="color: #ffffff"></a-entity>
       <a-entity id="roads" gltf-part="src: #city; part: roads" ccbasic-material="color: #000000"></a-entity>
@@ -125,15 +127,21 @@
       <a-entity id="background" gltf-part="src: #city; part: background" ccbasic-material="color: #ffffff"></a-entity>
 
       <a-entity id="power-wires" gltf-part="src: #city; part: power_wires" power-wire-material></a-entity>
-      <a-entity id="power-connector1" gltf-part="src: #city; part: power_connector1" ccbasic-material="color: #000000"></a-entity>
-      <a-entity id="power-connector1" gltf-part="src: #city; part: power_connector2" ccbasic-material="color: #000000"></a-entity>
+      <a-entity id="power-connector1" gltf-part="src: #city; part: power_connector1" ccbasic-material="color: #000000">
+      </a-entity>
+      <a-entity id="power-connector1" gltf-part="src: #city; part: power_connector2" ccbasic-material="color: #000000">
+      </a-entity>
       <a-entity id="power-poles" gltf-part="src: #city; part: power_poles" ccbasic-material="color: #000000"></a-entity>
-      <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" ccbasic-material="color: #000000"></a-entity>
-      <a-entity id="power-core" gltf-part="src: #city; part: power_core" material="shader: julia; viewDirMag: 1"></a-entity>
+      <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" ccbasic-material="color: #000000">
+      </a-entity>
+      <a-entity id="power-core" gltf-part="src: #city; part: power_core" material="shader: julia; viewDirMag: 1">
+      </a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2"
         julia-material></a-entity>
       <a-entity id="origin_inside1" gltf-part="src: #city; part: wire_origin_inside1"
+        material="shader: julia; side: double;"></a-entity>
+      <a-entity id="origin_inside2" gltf-part="src: #city; part: wire_origin_inside2"
         material="shader: julia; side: double;"></a-entity>
       <a-entity id="origin2" gltf-part="src: #city; part: wire_origin2" warp-point="exitWarpId: #origin1"
         julia-material></a-entity>
@@ -154,7 +162,7 @@
         ccbasic-material="color: #ffffff; vertexColors: face;">
       </a-entity>
       <a-entity creature="spawnPosition: -43.633 15.560 -161.365;">
-      <!-- <a-entity creature="spawnPosition: -181.502 -18.208 -199.539;"> -->
+        <!-- <a-entity creature="spawnPosition: -181.502 -18.208 -199.539;"> -->
         <a-entity id="creature-step-sound"
           sound="src: #creature-step; positional: true; autoplay: false; loop: false; volume: 3; poolSize: 3">
         </a-entity>
@@ -171,7 +179,7 @@
 
     <a-entity id="void-scene" position="0 0 0" visible="false">
       <a-entity id="void-scene-sound"
-      sound="src: #void-background-sound; positional: false; autoplay: false; loop: true; volume: 1;"></a-entity>
+        sound="src: #void-background-sound; positional: false; autoplay: false; loop: true; volume: 1;"></a-entity>
       <a-entity vector-fields></a-entity>
     </a-entity>
   </a-scene>
