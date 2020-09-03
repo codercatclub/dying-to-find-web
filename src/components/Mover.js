@@ -57,6 +57,8 @@ const Mover = {
       navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
         if (supported) {
           this.isVR = true;
+          // set camera to the right pos 
+          this.cameraRig.position.set(-12, 6, 150);
         }
       });
     }
@@ -156,12 +158,12 @@ const Mover = {
         ) + 1.8;
       if(groundHeight < -50)
       {
-        this.camera.position.copy(this.lastCameraPosition);
+        this.cameraRig.position.copy(this.lastCameraPosition);
       } else {
         const lerpSpeed = Math.min(0.01 * timeDelta, 1);
         this.cameraRig.position.y =
         lerpSpeed * groundHeight + (1 - lerpSpeed) * this.cameraRig.position.y;
-        this.lastCameraPosition.copy(this.camera.position);
+        this.lastCameraPosition.copy(this.cameraRig.position);
       }
     }
   },
@@ -185,7 +187,6 @@ const Mover = {
         lerpSpeed * groundHeight + (1 - lerpSpeed) * this.camera.position.y;
         this.lastCameraPosition.copy(this.camera.position);
       }
-      
     }
   },
 
