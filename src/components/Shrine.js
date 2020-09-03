@@ -26,6 +26,7 @@ const Shrine = {
       uniforms: {
         timeMsec: { value: 0.0 },
         viewDirMag: { value: 0.0 },
+        blackOut: { value: 0.0 },
       },
       vertexShader: JuliaVert,
       fragmentShader: JuliaFrag,

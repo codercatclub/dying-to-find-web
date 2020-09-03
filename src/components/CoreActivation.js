@@ -35,8 +35,14 @@ const CoreActivation = {
     if (dist < 5) {
       this.activated = true;
       //start activation routine
-      this.wireMeshMaterial.activate();
-      this.coreMesh.material.uniforms["viewDirMag"].value = 0;
+      document.querySelector('#core-activate-sound').components["sound"].playSound()
+      setTimeout(() => { 
+        this.coreMesh.material.uniforms["blackOut"].value = 0;
+      }, 1000);
+      setTimeout(() => { 
+        this.wireMeshMaterial.activate();
+        this.coreMesh.material.uniforms["viewDirMag"].value = 0;
+      }, 4000);
     }
   },
 };

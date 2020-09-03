@@ -10,6 +10,7 @@ const JuliaMaterialComponent = {
     playerPos1: { type: "vec4", default: new THREE.Vector4(1000,1000,1000,1) },
     playerPos2: { type: "vec4", default: new THREE.Vector4(1000,1000,1000,1) },
     viewDirMag: { default: 1 },
+    blackOut: { default: 0 },
   },
 
   init: function () {

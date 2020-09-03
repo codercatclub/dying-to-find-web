@@ -171,6 +171,7 @@
       <audio id="creature-move" src="assets/sounds/servo.mp3" preload="auto"></audio>
       <audio id="void-background-sound" src="assets/sounds/ambi.mp3" preload="auto"></audio>
       <audio id="teleport" src="assets/sounds/teleport.mp3" preload="auto"></audio>
+      <audio id="core-activate" src="assets/sounds/core.mp3" preload="auto"></audio>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
       <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer"></a-asset-item>
       <a-asset-item id="path" src="assets/char_path.json"></a-asset-item>
@@ -213,8 +214,10 @@
       <a-entity id="power-poles" gltf-part="src: #city; part: power_poles" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" ccbasic-material="color: #000000">
       </a-entity>
-      <a-entity id="power-core" gltf-part="src: #city; part: power_core" material="shader: julia; viewDirMag: 1">
+      <a-entity id="power-core" gltf-part="src: #city; part: power_core" material="shader: julia; blackOut: 1; viewDirMag: 1">
       </a-entity>
+      <a-entity id="core-activate-sound"
+      sound="src: #core-activate; positional: true; autoplay: false; loop: false; volume: 15;"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2"
         julia-material></a-entity>

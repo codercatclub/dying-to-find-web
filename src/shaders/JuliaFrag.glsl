@@ -3,6 +3,7 @@ varying vec3 worldNormal;
 varying vec3 vColor;
 varying float colorMask;
 uniform float viewDirMag;
+uniform float blackOut;
 uniform float cutOff;
 @import ./FogFragPars;
 
@@ -76,7 +77,7 @@ void main() {
     }
 
     vec3 color2 = spectral_zucconi(400.0 + 400.0 * (worldNormal.y*worldNormal.x*worldNormal.z+1.0)*fract(timeMsec/1000.0));
-    finalColor.rgb = max(finalColor.rgb, (1.0 - viewDirMag) * color2);
+    finalColor.rgb = (1.0 - blackOut) * max(finalColor.rgb, (1.0 - viewDirMag) * color2);
   } 
    
   gl_FragColor = finalColor;

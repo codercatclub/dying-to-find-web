@@ -24,6 +24,7 @@ const Julia = {
     playerPos1: { type: 'vec4', is: 'uniform', default: new THREE.Vector4(1000,1000,1000,1) },
     playerPos2: { type: 'vec4', is: 'uniform', default: new THREE.Vector4(1000,1000,1000,1), },
     viewDirMag: { type: 'float', is: 'uniform', default: 0 },
+    blackOut: { type: 'float', is: 'uniform', default: 0 },
   },
   vertexShader: JuliaVert,
   fragmentShader: JuliaFrag,
