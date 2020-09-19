@@ -92,6 +92,10 @@
       height: 71px;
     }
 
+    #vrTutorial {
+      display: none;
+    }
+
     @keyframes animate {
       0% {
         background-position: -500%;
@@ -122,6 +126,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
+      // Handle loading screen
       let ascene = document.querySelector('a-scene');
       let loadingScreen = document.querySelector('#loading-screen');
       let lodingScreennMinDuration = 18; // sec
@@ -141,6 +146,18 @@
           loadingScreen.style.display = 'none';
         }
       });
+
+      // Handle VR specific stuff
+      const supportsVR = 'getVRDisplays' in navigator;
+
+      if (supportsVR) {
+        const desktopTutorial = document.getElementById('desktopTutorial');
+        const vrTutorial = document.getElementById('vrTutorial');
+
+        // Show VR specific tutorial text
+        desktopTutorial.style.display = 'none';
+        vrTutorial.style.display = 'flex';
+      }
     });
   </script>
 
@@ -151,7 +168,7 @@
     fog="type: exponential; density: 0.01; color: #ffffff" loading-screen="enabled: false">
 
     <!-- Tutorial UI -->
-    <div class="moveTutorialContainer">
+    <div id="desktopTutorial" class="moveTutorialContainer">
       <div class="tutorialText">USE</div>
       <svg id="wasd" class="tutorialImg move" xmlns="http://www.w3.org/2000/svg" width="24.4385in" height="16.0026in"
         viewBox="0 0 1759.5754 1152.1854">
@@ -175,6 +192,10 @@
         </g>
       </svg>
       <div class="tutorialText">TO MOVE</div>
+    </div>
+
+    <div id="vrTutorial" class="moveTutorialContainer">
+      <div class="tutorialText">USE RIGHT CONTROLER THUMBSTICK TO MOVE AROUND AND LEFT TO QUICK TURN</div>
     </div>
 
     <a-assets>
