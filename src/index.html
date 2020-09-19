@@ -96,6 +96,7 @@
       0% {
         background-position: -500%;
       }
+
       100% {
         background-position: 500%;
       }
@@ -110,11 +111,11 @@
 </head>
 
 <body>
-  
+
   <div id="loading-screen">
     <div class="quote flash-ligh">
-      If you look long enough into the void, the void begins to look back through you.
-      <div class="author">Friedrich Nietzsche</div>
+      Power lines are the modern shrines of a soulless civilization.
+      <div class="author">Find the way out.</div>
     </div>
     <div class="loading flash-ligh">Loading...</div>
   </div>
@@ -123,10 +124,22 @@
     document.addEventListener('DOMContentLoaded', (event) => {
       let ascene = document.querySelector('a-scene');
       let loadingScreen = document.querySelector('#loading-screen');
+      let lodingScreennMinDuration = 18; // sec
+      let loadStart = new Date().getTime();
 
-      ascene.addEventListener('loaded', function () {
-        // Scene and all assets are fully loaded
-        loadingScreen.style.display = 'none';
+      ascene.addEventListener('loaded', () => {
+        let loadEnd = new Date().getTime();
+
+        let timeDelta = ((loadEnd - loadStart) % (1000 * 60)) / 1000.0;
+
+        if (timeDelta < lodingScreennMinDuration) {
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, ((lodingScreennMinDuration - timeDelta) * 1000))
+        } else {
+          // Scene and all assets are fully loaded
+          loadingScreen.style.display = 'none';
+        }
       });
     });
   </script>
@@ -173,10 +186,12 @@
       <audio id="teleport" src="assets/sounds/teleport.mp3" preload="auto"></audio>
       <audio id="core-activate" src="assets/sounds/core.mp3" preload="auto"></audio>
       <a-asset-item id="city" src="assets/models/city2.glb"></a-asset-item>
-      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="character" src="assets/models/abstract_char_walk_01.fbx" response-type="arraybuffer">
+      </a-asset-item>
       <a-asset-item id="path" src="assets/char_path.json"></a-asset-item>
       <a-asset-item id="shrine-asset" src="assets/models/shrine.fbx" response-type="arraybuffer"></a-asset-item>
-      <a-asset-item id="shrine-terminal-asset" src="assets/models/shrine_terminal.fbx" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="shrine-terminal-asset" src="assets/models/shrine_terminal.fbx" response-type="arraybuffer">
+      </a-asset-item>
     </a-assets>
 
     <a-entity loading-screen />
@@ -186,8 +201,8 @@
     </a-entity>
     </a-entity>
     <a-entity id="cameraRig">
-      <a-entity id="camera" position="-12 6 150" camera wasd-controls="acceleration: 400" look-controls
-        quick-turn mover="speed: 2">
+      <a-entity id="camera" position="-12 6 150" camera wasd-controls="acceleration: 400" look-controls quick-turn
+        mover="speed: 2">
         <a-sphere id="viewBlocker" material="shader: julia; side: back;" scale="1 1 1"></a-sphere>
         <a-entity id="teleport-sound"
           sound="src: #teleport; positional: true; autoplay: false; loop: false; volume: 1;">
@@ -214,10 +229,11 @@
       <a-entity id="power-poles" gltf-part="src: #city; part: power_poles" ccbasic-material="color: #000000"></a-entity>
       <a-entity id="power-shrine" gltf-part="src: #city; part: power_shrine" ccbasic-material="color: #000000">
       </a-entity>
-      <a-entity id="power-core" gltf-part="src: #city; part: power_core" material="shader: julia; blackOut: 1; viewDirMag: 1">
+      <a-entity id="power-core" gltf-part="src: #city; part: power_core"
+        material="shader: julia; blackOut: 1; viewDirMag: 1">
       </a-entity>
       <a-entity id="core-activate-sound"
-      sound="src: #core-activate; positional: true; autoplay: false; loop: false; volume: 15;"></a-entity>
+        sound="src: #core-activate; positional: true; autoplay: false; loop: false; volume: 15;"></a-entity>
       <a-entity gltf-part="src: #city; part: magnetic_field" magnetic-material></a-entity>
       <a-entity id="origin1" gltf-part="src: #city; part: wire_origin1" warp-point="exitWarpId: #origin2"
         julia-material></a-entity>
