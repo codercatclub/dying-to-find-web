@@ -21,6 +21,7 @@
       align-items: center;
       z-index: 100;
     }
+    .a-enter-vr-button { display: none }
 
     .quote {
       width: 80%;
@@ -129,9 +130,14 @@
       // Handle loading screen
       let ascene = document.querySelector('a-scene');
       let loadingScreen = document.querySelector('#loading-screen');
-      let lodingScreennMinDuration = 18; // sec
+      let lodingScreennMinDuration = 15; // sec
       let loadStart = new Date().getTime();
+      const desktopTutorial = document.getElementById('desktopTutorial');
+      const vrTutorial = document.getElementById('vrTutorial');
 
+
+      desktopTutorial.style.display = 'none';
+      vrTutorial.style.display = 'none';
       ascene.addEventListener('loaded', () => {
         let loadEnd = new Date().getTime();
 
@@ -140,25 +146,34 @@
         if (timeDelta < lodingScreennMinDuration) {
           setTimeout(() => {
             loadingScreen.style.display = 'none';
+            setTutorial()
           }, ((lodingScreennMinDuration - timeDelta) * 1000))
         } else {
           // Scene and all assets are fully loaded
           loadingScreen.style.display = 'none';
+          setTutorial()
         }
       });
 
-      // Handle VR specific stuff
-      const supportsVR = 'getVRDisplays' in navigator;
+    });
 
-      if (supportsVR) {
+    setTutorial = () => {
+      if ("xr" in navigator) {
+        navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
         const desktopTutorial = document.getElementById('desktopTutorial');
         const vrTutorial = document.getElementById('vrTutorial');
-
-        // Show VR specific tutorial text
-        desktopTutorial.style.display = 'none';
-        vrTutorial.style.display = 'flex';
+          document.querySelector('.a-enter-vr-button').style.display = 'block';
+          if (supported) {
+            // Show VR specific tutorial text
+            desktopTutorial.style.display = 'none';
+            vrTutorial.style.display = 'flex';
+          } else {
+            desktopTutorial.style.display = 'flex';
+            vrTutorial.style.display = 'none';
       }
     });
+      }
+    }
   </script>
 
   <!-- Order does matter here! Bundle should be loaded after loading screen but before main scene.-->
@@ -195,7 +210,7 @@
     </div>
 
     <div id="vrTutorial" class="moveTutorialContainer">
-      <div class="tutorialText">USE RIGHT CONTROLER THUMBSTICK TO MOVE AROUND AND LEFT TO QUICK TURN</div>
+      <div class="tutorialText"  style="width: 55%;">USE RIGHT CONTROLER THUMBSTICK TO MOVE AROUND AND LEFT TO QUICK TURN</div>
     </div>
 
     <a-assets>
