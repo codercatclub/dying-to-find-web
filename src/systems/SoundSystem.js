@@ -45,57 +45,6 @@ export default {
     this.muted = true;
     this.sounds = {};
 
-    const addSoundButton = () => {
-      // Add sound button
-      var css = `
-          .soundBtn {
-            position: absolute;
-            bottom: 15px;
-            left: 20px;
-            z-index: 999;
-            cursor: pointer;
-          };
-        `;
-    
-      ingectCSS(css);
-    
-      const body = document.querySelector("body");
-      const div = document.createElement("div");
-    
-      div.setAttribute("class", "soundBtn");
-    
-      div.innerHTML = noSoundSVG;
-      div.onclick = () => {
-        if (this.muted) {
-          div.innerHTML = soundSVG;
-    
-          // Unmute and play all sounds
-          this.entities.forEach((el) => {
-            const id = el.getAttribute("id");
-            const sound = el.components.sound;
-    
-            if (sound.data.autoplay) {
-              sound.playSound();
-            }
-    
-            // Restore sound volume
-            el.setAttribute("sound", { volume: this.sounds[id].volume });
-          });
-        } else {
-          div.innerHTML = noSoundSVG;
-    
-          // Mute all sounds
-          this.entities.forEach((el) => {
-            el.setAttribute("sound", { volume: 0 });
-          });
-        }
-    
-        this.muted = !this.muted;
-      };
-    
-      body.appendChild(div);
-    };
-
     this.entities.forEach((el) => {
       el.addEventListener("object3dset", (event) => {
         const sound = event.target.components["sound"];
@@ -111,16 +60,74 @@ export default {
 
         if (this.entities.length === Object.size(this.sounds)) {
           console.log("All sounds are loaded!");
-          addSoundButton();
+          this.addSoundButton();
         }
       });
     });
   },
 
+  addSoundButton: function () {
+    // Add sound button
+    var css = `
+    .soundBtn {
+      position: absolute;
+      bottom: 15px;
+      left: 20px;
+      z-index: 999;
+      cursor: pointer;
+    };
+    `;
+
+    ingectCSS(css);
+
+    const body = document.querySelector("body");
+    const div = document.createElement("div");
+
+    div.setAttribute("class", "soundBtn");
+
+    div.innerHTML = noSoundSVG;
+    div.addEventListener('click', () => {
+      this.setSound(false);
+    });
+
+    body.appendChild(div);
+  },
+
+  setSound: function (overrideOn) {
+    if (!this.iconDiv) {
+      this.iconDiv = document.querySelector(".soundBtn");
+    }
+    if (this.muted || overrideOn) {
+      this.iconDiv.innerHTML = soundSVG;
+
+      // Unmute and play all sounds
+      this.entities.forEach((el) => {
+        const id = el.getAttribute("id");
+        const sound = el.components.sound;
+
+        if (sound.data.autoplay) {
+          sound.playSound();
+        }
+
+        // Restore sound volume
+        el.setAttribute("sound", { volume: this.sounds[id].volume });
+      });
+      this.muted = false;
+    } else {
+      this.iconDiv.innerHTML = noSoundSVG;
+
+      // Mute all sounds
+      this.entities.forEach((el) => {
+        el.setAttribute("sound", { volume: 0 });
+      });
+
+      this.muted = true;
+    }
+  },
+
   registerMe: function (el) {
     this.entities.push(el);
   },
-
   unregisterMe: function (el) {
     var index = this.entities.indexOf(el);
     this.entities.splice(index, 1);
